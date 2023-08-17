@@ -1,5 +1,6 @@
 package com.auctionapp.model.product;
 
+import com.auctionapp.model.user.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -31,14 +32,15 @@ public class Product {
     @Column(name = "category")
     private EProductCategory category;
 
-    @JoinColumn(name = "user_id")
-    private Long userId;
+    @ManyToOne
+    @JoinColumn(name="user_id", referencedColumnName = "id")
+    private User user;
 
-    public Product(String name, double starting_price, String description, Long userId, EProductCategory category) {
+    public Product(String name, double starting_price, String description, User user, EProductCategory category) {
         this.name = name;
         this.starting_price = starting_price;
         this.description = description;
-        this.userId = userId;
+        this.user = user;
         this.category = category;
     }
 
