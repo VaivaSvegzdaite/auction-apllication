@@ -6,29 +6,34 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ProductService {
-    private static ProductRepository productRepository;
 
-    @Autowired
+    private final ProductRepository productRepository;
+
     public ProductService(ProductRepository productRepository) {
         this.productRepository = productRepository;
     }
 
-    public static Product createProduct(Product product) {
+    public Product createProduct(Product product) {
         return productRepository.save(product);
     }
 
-    public static List<Product> getAllProducts() {
+    public List<Product> getAllProducts() {
         return productRepository.findAll();
     }
 
-    public static Product updateProduct(Product product) {
+    public Optional<Product> getProductById(Long id) {
+        return productRepository.findById(id);
+    }
+
+    public Product updateProduct(Product product) {
         return productRepository.save(product);
     }
 
-    public static void deleteProduct(Long id) {
+    public void deleteProduct(Long id) {
         productRepository.deleteById(id);
     }
 }
