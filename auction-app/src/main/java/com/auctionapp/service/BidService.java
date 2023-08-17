@@ -1,7 +1,7 @@
-package com.auctionapp.bid.service;
+package com.auctionapp.service;
 
-import com.auctionapp.bid.model.Bid;
-import com.auctionapp.bid.repository.BidRepository;
+import com.auctionapp.model.bid.Bid;
+import com.auctionapp.repository.BidRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

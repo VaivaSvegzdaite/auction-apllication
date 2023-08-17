@@ -1,9 +1,8 @@
-package com.auctionapp.bid.model;
+package com.auctionapp.model.bid;
 
-import com.auctionapp.login.model.Role;
-import com.auctionapp.login.model.User;
+import com.auctionapp.model.product.Product;
+import com.auctionapp.model.user.User;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

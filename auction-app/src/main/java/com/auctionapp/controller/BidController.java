@@ -1,8 +1,8 @@
-package com.auctionapp.bid.controller;
+package com.auctionapp.controller;
 
 
-import com.auctionapp.bid.model.Bid;
-import com.auctionapp.bid.service.BidService;
+import com.auctionapp.model.bid.Bid;
+import com.auctionapp.service.BidService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
