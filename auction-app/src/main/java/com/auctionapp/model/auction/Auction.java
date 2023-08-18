@@ -33,4 +33,6 @@ public class Auction {
     @JoinColumn(name = "user_id")
     private Long userId;
 
+
+    //bid_id missing
 }
