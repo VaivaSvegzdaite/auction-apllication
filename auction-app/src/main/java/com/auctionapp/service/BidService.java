@@ -1,7 +1,9 @@
 package com.auctionapp.service;
 
 import com.auctionapp.model.bid.Bid;
+import com.auctionapp.model.product.Product;
 import com.auctionapp.repository.BidRepository;
+import com.auctionapp.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,15 +14,27 @@ import java.util.Optional;
 public class BidService {
     private BidRepository bidRepository;
 
-// add product repository
+    private ProductRepository productRepository;
 
     @Autowired
-    public BidService(BidRepository bidRepository) {
+    public BidService(BidRepository bidRepository, ProductRepository productRepository) {
         this.bidRepository = bidRepository;
+        this.productRepository = productRepository;
     }
 
     public List<Bid> findAll() {
         return bidRepository.findAll();
+    }
+
+    public List<Bid> findByProductId(long productId) {
+        Optional<Product> result = productRepository.findById(productId);
+        Product product = null;
+        if (result.isPresent()) {
+            product = result.get();
+        } else {
+            throw new RuntimeException("Did not find product with id " + productId);
+        }
+        return bidRepository.findByProduct(product);
     }
 
     public Bid findById(Long id) {
@@ -41,15 +55,4 @@ public class BidService {
     public void deleteById(Long id) {
         bidRepository.deleteById(id);
     }
-
-//    public List<Bid> findByProductId(long productId) {
-//        Optional<Product> result = productRepository.findById(productId);
-//        Product product = null;
-//        if (result.isPresent()) {
-//            product = result.get();
-//        } else {
-//            throw new RuntimeException("Did not find product with id " + productId);
-//        }
-//        return bidRepository.findByProduct(product);
-//    }
 }

@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/bid")
 public class BidController {
 
     private BidService bidService;
@@ -19,17 +19,17 @@ public class BidController {
         this.bidService = bidService;
     }
 
-    @GetMapping("/bids")
+    @GetMapping("/")
     public List<Bid> getAllBids() {
         return bidService.findAll();
     }
 
-//    @GetMapping("/bids/product/{id}")
-//    public List<Bid> getBidsByProduct(@PathVariable long productId) {
-//        return bidService.findByProductId(productId);
-//    }
+    @GetMapping("/product/{id}")
+    public List<Bid> getBidsByProduct(@PathVariable long productId) {
+        return bidService.findByProductId(productId);
+    }
 
-    @GetMapping("/bids/{id}")
+    @GetMapping("/{id}")
     public Bid getBidById(@PathVariable long id) {
         Bid bid = bidService.findById(id);
         if (bid == null) {
@@ -38,17 +38,17 @@ public class BidController {
         return bid;
     }
 
-    @PostMapping("/bids")
+    @PostMapping("/")
     public Bid createBid(@RequestBody Bid bid) {
         return bidService.save(bid);
     }
 
-    @PutMapping("/bids")
+    @PutMapping("/")
     public Bid updateBid(@RequestBody Bid bid) {
         return bidService.save(bid);
     }
 
-    @DeleteMapping("/bids/{id}")
+    @DeleteMapping("/{id}")
     public void deleteBid(@PathVariable long id) {
         Bid bid = bidService.findById(id);
         if (bid == null) {
