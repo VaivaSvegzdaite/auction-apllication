@@ -84,7 +84,7 @@ public class ProductController {
         if (userService.getUserById(userId).isPresent()) {
             existingProduct.getUser().setId(productDTO.getUserId());
         } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User for updating product doesn't exists!");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User for updating product doesn't exist!");
         }
         productService.updateProduct(existingProduct);
         return ResponseEntity.ok("Product was updated successfully!");
@@ -96,7 +96,7 @@ public class ProductController {
             productService.deleteProduct(id);
             return ResponseEntity.ok("Product was deleted successfully!");
         } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product for deletion doesn't exists!");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product for deletion doesn't exist!");
         }
     }
 

@@ -1,5 +1,6 @@
 package com.auctionapp.model.auction;
 
+import com.auctionapp.model.user.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -30,8 +31,9 @@ public class Auction {
     @Column (name = "end_time")
     private Date endTime;
 
-    @JoinColumn(name = "user_id")
-    private Long userId;
+    @ManyToOne
+    @JoinColumn(name="user_id", referencedColumnName = "id")
+    private User user;
 
 
     //bid_id missing
