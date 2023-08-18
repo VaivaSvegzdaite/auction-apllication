@@ -40,7 +40,7 @@ public class ProductController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @PostMapping("/add")
+    @PostMapping("/")
     public ResponseEntity<String> createProduct(@RequestBody Product product) {
         if (product.getId() != null && product.getId() != 0) {
             return ResponseEntity.badRequest().build();
