@@ -8,6 +8,6 @@ import lombok.Setter;
 public class BidDTO {
     private Long id;
     private double price;
-    private long user_id;
-    private long product_id;
+    private Long userId;
+    private Long productId;
 }
