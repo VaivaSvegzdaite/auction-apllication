@@ -36,5 +36,9 @@ public class Product {
     @JoinColumn(name="user_id", referencedColumnName = "id")
     private User user;
 
+    @Basic
+    @Column(name = "url")
+    private String url;
+
 }
 

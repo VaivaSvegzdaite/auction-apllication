@@ -49,6 +49,7 @@ public class ProductController {
         if (userService.getUserById(userId).isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User for adding product doesn't exist");
         }
+        product.setUrl(product.getUrl());
         productService.createProduct(product);
         return ResponseEntity.ok("Product created successfully!");
     }
@@ -68,6 +69,7 @@ public class ProductController {
         existingProduct.setStarting_price(productDTO.getStarting_price());
         existingProduct.setDescription(productDTO.getDescription());
         existingProduct.setCategory(EProductCategory.valueOf(productDTO.getCategory()));
+        existingProduct.setUrl(productDTO.getUrl());
         Long userId = productDTO.getUserId();
         if (userService.getUserById(userId).isPresent()) {
             existingProduct.getUser().setId(productDTO.getUserId());
@@ -95,6 +97,7 @@ public class ProductController {
         productDTO.setStarting_price(product.getStarting_price());
         productDTO.setDescription(product.getDescription());
         productDTO.setCategory(String.valueOf(product.getCategory()));
+        productDTO.setUrl(product.getUrl());
         if (product.getUser() != null) {
             productDTO.setUserId(product.getUser().getId());
         }
