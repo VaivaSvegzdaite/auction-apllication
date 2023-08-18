@@ -2,7 +2,6 @@ package com.auctionapp.service;
 
 import com.auctionapp.model.product.Product;
 import com.auctionapp.repository.ProductRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,8 +16,8 @@ public class ProductService {
         this.productRepository = productRepository;
     }
 
-    public Product createProduct(Product product) {
-        return productRepository.save(product);
+    public void createProduct(Product product) {
+        productRepository.save(product);
     }
 
     public List<Product> getAllProducts() {
@@ -29,8 +28,8 @@ public class ProductService {
         return productRepository.findById(id);
     }
 
-    public Product updateProduct(Product product) {
-        return productRepository.save(product);
+    public void updateProduct(Product product) {
+        productRepository.save(product);
     }
 
     public void deleteProduct(Long id) {
