@@ -2,12 +2,8 @@ package com.auctionapp.controller;
 
 import com.auctionapp.model.auction.Auction;
 import com.auctionapp.model.auction.AuctionDTO;
-import com.auctionapp.model.product.EProductCategory;
-import com.auctionapp.model.product.Product;
-import com.auctionapp.model.product.ProductDTO;
 import com.auctionapp.service.AuctionService;
 import com.auctionapp.service.BidService;
-import com.auctionapp.service.ProductService;
 import com.auctionapp.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
