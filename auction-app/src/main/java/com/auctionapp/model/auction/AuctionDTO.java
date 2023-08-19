@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.Date;
+import java.util.List;
 
 @Getter
 @Setter
@@ -13,5 +14,5 @@ public class AuctionDTO {
     private Date startTime;
     private Date endTime;
     private Long userId;
-    //bid_id missing
+    private List<Long> bidId;
 }

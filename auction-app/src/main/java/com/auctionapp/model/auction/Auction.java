@@ -1,5 +1,6 @@
 package com.auctionapp.model.auction;
 
+import com.auctionapp.model.bid.Bid;
 import com.auctionapp.model.user.User;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -7,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor
@@ -35,6 +37,7 @@ public class Auction {
     @JoinColumn(name="user_id", referencedColumnName = "id")
     private User user;
 
-
-    //bid_id missing
+    @OneToMany
+    @JoinColumn(name="bid_id", referencedColumnName = "id")
+    private List<Bid> bids;
 }

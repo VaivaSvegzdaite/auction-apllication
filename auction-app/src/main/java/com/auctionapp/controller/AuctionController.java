@@ -6,6 +6,7 @@ import com.auctionapp.model.product.EProductCategory;
 import com.auctionapp.model.product.Product;
 import com.auctionapp.model.product.ProductDTO;
 import com.auctionapp.service.AuctionService;
+import com.auctionapp.service.BidService;
 import com.auctionapp.service.ProductService;
 import com.auctionapp.service.UserService;
 import org.springframework.http.HttpStatus;
@@ -23,9 +24,12 @@ public class AuctionController {
 
     public final UserService userService;
 
-    public AuctionController(AuctionService auctionService, UserService userService) {
+    public final BidService bidService;
+
+    public AuctionController(AuctionService auctionService, UserService userService, BidService bidService) {
         this.auctionService = auctionService;
         this.userService = userService;
+        this.bidService = bidService;
     }
 
     @GetMapping("/")
@@ -74,7 +78,7 @@ public class AuctionController {
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User for updating auction doesn't exist!");
         }
-        //update bid_id too
+        //do we update bids here? because there might be many bids associated with this auction
         auctionService.updateAuction(existingAuction);
         return ResponseEntity.ok("Auction was updated successfully!");
     }
@@ -95,6 +99,8 @@ public class AuctionController {
         auctionDTO.setType(auction.getType());
         auctionDTO.setStartTime(auction.getStartTime());
         auctionDTO.setEndTime(auction.getEndTime());
+        //auctionDTO.setBidId(auction.getBids().getId());
+        //not sure what to do here
         if (auction.getUser() != null) {
             auctionDTO.setUserId(auction.getUser().getId());
         }
