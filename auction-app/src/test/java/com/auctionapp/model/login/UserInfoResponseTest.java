@@ -15,13 +15,15 @@ class UserInfoResponseTest {
         String username = "john_doe";
         String email = "john@example.com";
         List<String> roles = Arrays.asList("ROLE_USER", "ROLE_ADMIN");
+        String token = "ABC";
 
-        UserInfoResponse response = new UserInfoResponse(id, username, email, roles);
+        UserInfoResponse response = new UserInfoResponse(id, username, email, roles, token);
 
         assertEquals(id, response.getId());
         assertEquals(username, response.getUsername());
         assertEquals(email, response.getEmail());
         assertEquals(roles, response.getRoles());
+        assertEquals(token, response.getToken());
     }
 
 }

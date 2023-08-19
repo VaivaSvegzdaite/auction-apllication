@@ -2,10 +2,7 @@ package com.auctionapp.controller;
 
 
 import com.auctionapp.config.jwt.JwtUtils;
-import com.auctionapp.model.login.LoginRequest;
-import com.auctionapp.model.login.MessageResponse;
-import com.auctionapp.model.login.SignupRequest;
-import com.auctionapp.model.login.UserInfoResponse;
+import com.auctionapp.model.login.*;
 import com.auctionapp.model.role.ERole;
 import com.auctionapp.model.role.Role;
 import com.auctionapp.model.user.User;
@@ -21,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -34,8 +32,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-//for UI Client (withCredentials)
-//@CrossOrigin(origins = "http://localhost:8081", maxAge = 3600, allowCredentials="true")
+
 @CrossOrigin(origins = "*", maxAge = 36000)
 @Tag(name = "AuthController", description = "Controller defines entry authentication points for signup, signin, signout")
 @RestController
@@ -63,20 +60,21 @@ public class AuthController {
                 .authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
+        String jwt = jwtUtils.generateTokenFromUsername(loginRequest.getUsername());
 
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
 
         ResponseCookie jwtCookie = jwtUtils.generateJwtCookie(userDetails);
 
         List<String> roles = userDetails.getAuthorities().stream()
-                .map(item -> item.getAuthority())
+                .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.toList());
-
         return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, jwtCookie.toString())
                 .body(new UserInfoResponse(userDetails.getId(),
                         userDetails.getUsername(),
                         userDetails.getEmail(),
-                        roles));
+                        roles,
+                        jwt));
     }
 
     @PostMapping("/signup")

@@ -13,12 +13,15 @@ public class UserInfoResponse {
     private String username;
     private String email;
     private List<String> roles;
+    private String token;
+    private String type = "Bearer";
 
-    public UserInfoResponse(Long id, String username, String email, List<String> roles) {
+    public UserInfoResponse(Long id, String username, String email, List<String> roles, String accessToken) {
         this.id = id;
         this.username = username;
         this.email = email;
         this.roles = roles;
+        this.token = accessToken;
     }
 
 }
