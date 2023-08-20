@@ -7,7 +7,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class UserInfoResponseTest {
+class UserInfoResponseDTOTest {
 
     @Test
     void givenUserInfo_whenCreatingUserInfoResponse_ShouldFieldsBeSet() {
@@ -17,7 +17,7 @@ class UserInfoResponseTest {
         List<String> roles = Arrays.asList("ROLE_USER", "ROLE_ADMIN");
         String token = "ABC";
 
-        UserInfoResponse response = new UserInfoResponse(id, username, email, roles, token);
+        UserInfoResponseDTO response = new UserInfoResponseDTO(id, username, email, roles, token);
 
         assertEquals(id, response.getId());
         assertEquals(username, response.getUsername());

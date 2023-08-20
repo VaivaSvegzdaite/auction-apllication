@@ -10,7 +10,7 @@ import java.util.Set;
 
 @Getter
 @Setter
-public class SignupRequest {
+public class SignupRequestDTO {
 
     @NotBlank
     @Size(min = 3, max = 20)

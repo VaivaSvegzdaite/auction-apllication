@@ -7,7 +7,7 @@ import java.util.List;
 
 @Getter
 @Setter
-public class UserInfoResponse {
+public class UserInfoResponseDTO {
 
     private Long id;
     private String username;
@@ -16,7 +16,7 @@ public class UserInfoResponse {
     private String token;
     private String type = "Bearer";
 
-    public UserInfoResponse(Long id, String username, String email, List<String> roles, String accessToken) {
+    public UserInfoResponseDTO(Long id, String username, String email, List<String> roles, String accessToken) {
         this.id = id;
         this.username = username;
         this.email = email;

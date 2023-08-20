@@ -6,13 +6,13 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class LoginRequestTest {
+class LoginRequestDTOTest {
 
-    private LoginRequest request;
+    private LoginRequestDTO request;
 
     @BeforeEach
     public void setUp() {
-        request = new LoginRequest();
+        request = new LoginRequestDTO();
     }
 
     @Test
@@ -28,7 +28,7 @@ class LoginRequestTest {
     @Test
     @DisplayName("Test login request with blank password")
     void givenBlankPassword_LoginRequest_ShouldThrowIllegalArgumentException() {
-        LoginRequest request = new LoginRequest();
+        LoginRequestDTO request = new LoginRequestDTO();
         request.setUsername("username");
         request.setPassword("");
         assertThrows(IllegalArgumentException.class, () -> {
@@ -39,7 +39,7 @@ class LoginRequestTest {
     @Test
     @DisplayName("Test valid login request")
     void givenValidUsernameAndPassword_LoginRequest_ShouldNoExceptionThrow() {
-        LoginRequest request = new LoginRequest();
+        LoginRequestDTO request = new LoginRequestDTO();
         request.setUsername("username");
         request.setPassword("password");
         assertDoesNotThrow(() -> {
@@ -47,7 +47,7 @@ class LoginRequestTest {
         });
     }
 
-    private void validateLoginRequest(LoginRequest request) {
+    private void validateLoginRequest(LoginRequestDTO request) {
         if (request.getUsername().isBlank() || request.getPassword().isBlank()) {
             throw new IllegalArgumentException("Username and password must not be blank");
         }
