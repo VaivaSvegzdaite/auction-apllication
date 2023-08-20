@@ -2,7 +2,10 @@ package com.auctionapp.controller;
 
 
 import com.auctionapp.config.jwt.JwtUtils;
-import com.auctionapp.model.login.*;
+import com.auctionapp.model.login.LoginRequestDTO;
+import com.auctionapp.model.login.MessageResponseDTO;
+import com.auctionapp.model.login.SignupRequestDTO;
+import com.auctionapp.model.login.UserInfoResponseDTO;
 import com.auctionapp.model.role.ERole;
 import com.auctionapp.model.role.Role;
 import com.auctionapp.model.user.User;
@@ -31,7 +34,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
-
 
 @CrossOrigin(origins = "*", maxAge = 36000)
 @Tag(name = "AuthController", description = "Controller defines entry authentication points for signup, signin, signout")
@@ -112,7 +114,6 @@ public class AuthController {
                 }
             });
         }
-
         user.setRoles(roles);
         userRepository.save(user);
 
