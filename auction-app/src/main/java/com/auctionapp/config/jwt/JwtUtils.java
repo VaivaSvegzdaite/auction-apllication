@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 import org.springframework.web.util.WebUtils;
 
 import java.security.Key;
@@ -23,6 +24,7 @@ import java.util.Date;
 @Component
 public class JwtUtils {
     private static final Logger logger = LoggerFactory.getLogger(JwtUtils.class);
+    private static final String TOKEN_PREFIX = "Bearer ";
 
     @Value("${auction.app.jwtSecret}")
     private String jwtSecret;
@@ -86,5 +88,14 @@ public class JwtUtils {
                 .setExpiration(new Date((new Date()).getTime() + jwtExpirationMs))
                 .signWith(key(), SignatureAlgorithm.HS256)
                 .compact();
+    }
+
+    public String extractJwtFromHeader(HttpServletRequest request) {
+        String headerAuth = request.getHeader("Authorization");
+
+        if (StringUtils.hasText(headerAuth) && headerAuth.startsWith(TOKEN_PREFIX)) {
+            return headerAuth.substring(TOKEN_PREFIX.length());
+        }
+        return null;
     }
 }
