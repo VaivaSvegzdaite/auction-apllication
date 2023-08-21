@@ -4,12 +4,12 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class MessageResponseTest {
+class MessageResponseDTOTest {
 
     @Test
     void givenMessage_whenCreatingMessageResponse_ShouldMessageBeSet() {
         String messageText = "Hello, world!";
-        MessageResponse response = new MessageResponse(messageText);
+        MessageResponseDTO response = new MessageResponseDTO(messageText);
         assertEquals(messageText, response.getMessage());
     }
 }

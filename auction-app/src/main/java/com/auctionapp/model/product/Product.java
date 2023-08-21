@@ -2,9 +2,13 @@ package com.auctionapp.model.product;
 
 import com.auctionapp.model.user.User;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Pattern;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @NoArgsConstructor
@@ -19,10 +23,15 @@ public class Product {
 
     @Basic
     @Column(name = "name")
+    @NotBlank(message = "Name is mandatory")
+    @Size(min = 4, max = 50, message = "Name must be between 4 and 50 characters")
+    @Pattern(regexp = "^(?!.*  )(?!\\s)(?!.*\\s$)[\\p{Alpha} ]*$", message = "Invalid name format. " +
+            "Name should contain only alphabets and space. Not start, end with space and should not contain consecutive spaces.  ")
     private String name;
 
     @Basic
     @Column(name = "starting_price")
+    @Min(value = 1, message = "Price should not be less than 1 EUR")
     private double starting_price;
 
     @Basic
@@ -35,6 +44,12 @@ public class Product {
     @ManyToOne
     @JoinColumn(name="user_id", referencedColumnName = "id")
     private User user;
+
+    @Basic
+    @Column(name = "url")
+    @NotBlank(message = "URL cannot be blank")
+    @Pattern(regexp = "^(https?|ftp)://[^\\s/$.?#].[^\\s]*$", message = "Invalid URL format")
+    private String url;
 
 }
 

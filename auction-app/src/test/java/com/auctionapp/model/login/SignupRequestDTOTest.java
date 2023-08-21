@@ -6,13 +6,13 @@ import org.junit.jupiter.api.Test;
 import java.util.Set;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class SignupRequestTest {
+public class SignupRequestDTOTest {
 
-    private SignupRequest request;
+    private SignupRequestDTO request;
 
     @BeforeEach
     public void setUp() {
-        request = new SignupRequest();
+        request = new SignupRequestDTO();
         request.setUsername("username");
         request.setEmail("user@example.com");
         request.setRole(Set.of("ROLE_USER"));
@@ -50,7 +50,7 @@ public class SignupRequestTest {
         });
     }
 
-    private void validateSignupRequest(SignupRequest request) {
+    private void validateSignupRequest(SignupRequestDTO request) {
         if (request.getUsername().isBlank() ||
                 request.getEmail().isBlank() ||
                 request.getPassword().isBlank() ||

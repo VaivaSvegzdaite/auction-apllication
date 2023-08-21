@@ -5,13 +5,16 @@ import com.auctionapp.model.product.Product;
 import com.auctionapp.model.product.ProductDTO;
 import com.auctionapp.service.ProductService;
 import com.auctionapp.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/product")
@@ -41,7 +44,15 @@ public class ProductController {
     }
 
     @PostMapping("/")
-    public ResponseEntity<String> createProduct(@RequestBody Product product) {
+    public ResponseEntity<String> createProduct(@RequestBody @Valid Product product, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return ResponseEntity.badRequest().
+                    body(bindingResult.
+                            getAllErrors().
+                            stream().
+                            map(ObjectError::getDefaultMessage).
+                            collect(Collectors.joining()));
+        }
         if (product.getId() != null && product.getId() != 0) {
             return ResponseEntity.badRequest().build();
         }
@@ -49,6 +60,7 @@ public class ProductController {
         if (userService.getUserById(userId).isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User for adding product doesn't exist");
         }
+        product.setUrl(product.getUrl());
         productService.createProduct(product);
         return ResponseEntity.ok("Product created successfully!");
     }
@@ -58,7 +70,6 @@ public class ProductController {
         if (id == null || productDTO.getUserId() == null) {
             return ResponseEntity.badRequest().body("Invalid request data!");
         }
-
         var oExistingProduct = productService.getProductById(id);
         if (oExistingProduct.isEmpty()) {
             return ResponseEntity.notFound().build();
@@ -68,6 +79,7 @@ public class ProductController {
         existingProduct.setStarting_price(productDTO.getStarting_price());
         existingProduct.setDescription(productDTO.getDescription());
         existingProduct.setCategory(EProductCategory.valueOf(productDTO.getCategory()));
+        existingProduct.setUrl(productDTO.getUrl());
         Long userId = productDTO.getUserId();
         if (userService.getUserById(userId).isPresent()) {
             existingProduct.getUser().setId(productDTO.getUserId());
@@ -95,6 +107,7 @@ public class ProductController {
         productDTO.setStarting_price(product.getStarting_price());
         productDTO.setDescription(product.getDescription());
         productDTO.setCategory(String.valueOf(product.getCategory()));
+        productDTO.setUrl(product.getUrl());
         if (product.getUser() != null) {
             productDTO.setUserId(product.getUser().getId());
         }
