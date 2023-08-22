@@ -56,7 +56,7 @@ class AdminServiceTest {
     }
 
     @Test
-    public void testDeleteUser() {
+    public void test_DeleteUserMethod_ShouldRemoveUserAndReturnStatusOk() {
         Long id = 2L;
         Role userRole = new Role();
         userRole.setName(ERole.ROLE_USER);
