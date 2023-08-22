@@ -38,46 +38,7 @@ public class AdminService {
         this.roleRepository = roleRepository;
     }
 
-    @Transactional
-    public ResponseEntity<?> registerUser(SignupRequestDTO signupRequestDTO) {
-        if (userRepository.existsByUsername(signupRequestDTO.getUsername())) {
-            return ResponseEntity.badRequest().body(new MessageResponseDTO("Error: Username is already taken!"));
-        }
 
-        if (userRepository.existsByEmail(signupRequestDTO.getEmail())) {
-            return ResponseEntity.badRequest().body(new MessageResponseDTO("Error: Email is already in use!"));
-        }
-
-        User user = new User(signupRequestDTO.getUsername(),
-                signupRequestDTO.getEmail(),
-                encoder.encode(signupRequestDTO.getPassword()));
-
-        Set<String> strRoles = signupRequestDTO.getRole();
-        Set<Role> roles = new HashSet<>();
-
-        if (strRoles == null) {
-            Role userRole = roleRepository.findByName(ERole.ROLE_USER)
-                    .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-            roles.add(userRole);
-        } else {
-            strRoles.forEach(role -> {
-                if (role.equals("admin")) {
-                    Role adminRole = roleRepository.findByName(ERole.ROLE_ADMIN)
-                            .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-                    roles.add(adminRole);
-                } else {
-                    Role userRole = roleRepository.findByName(ERole.ROLE_USER)
-                            .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-                    roles.add(userRole);
-                }
-            });
-        }
-        user.setRoles(roles);
-        userRepository.save(user);
-
-        return ResponseEntity.ok(new MessageResponseDTO("User registered successfully!"));
-
-    }
 
     @Transactional(readOnly = true)
     public Collection<UserDTO> getUsers() {
