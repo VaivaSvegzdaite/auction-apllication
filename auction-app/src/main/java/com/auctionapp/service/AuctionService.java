@@ -2,9 +2,6 @@ package com.auctionapp.service;
 
 import com.auctionapp.model.auction.Auction;
 import com.auctionapp.model.auction.AuctionDTO;
-import com.auctionapp.model.bid.Bid;
-import com.auctionapp.model.bid.BidDTO;
-import com.auctionapp.model.product.Product;
 import com.auctionapp.repository.AuctionRepository;
 import com.auctionapp.repository.BidRepository;
 import com.auctionapp.repository.UserRepository;
@@ -40,12 +37,25 @@ public class AuctionService {
 
     public AuctionDTO getAuctionById (Long id)
     {
-        return convertToDTO(auctionRepository.findById(id).get());
+        Optional<Auction> auction = auctionRepository.findById(id);
+        AuctionDTO auctionDTO = null;
+        if (auction.isPresent()) {
+            auctionDTO = convertToDTO(auction.get());
+        }
+        return auctionDTO;
     }
 
-    public Auction updateAuction (Auction auction)
+    public void updateAuction (Long id, AuctionDTO auctionWithUpdates)
     {
-        return auctionRepository.save(auction);
+        Optional<Auction> oAuction = auctionRepository.findById(id);
+        if (oAuction.isPresent()) {
+            Auction auction = oAuction.get();
+            auction.setType(auctionWithUpdates.getType());
+            auction.setStartTime(auctionWithUpdates.getStartTime());
+            auction.setEndTime(auctionWithUpdates.getEndTime());
+            //edit startingPrice here
+            auctionRepository.save(auction);
+        }
     }
 
     public void deleteAuction (Long id)
@@ -59,8 +69,8 @@ public class AuctionService {
         auctionDTO.setType(auction.getType());
         auctionDTO.setStartTime(auction.getStartTime());
         auctionDTO.setEndTime(auction.getEndTime());
-        //auctionDTO.setBidId(auction.getBids().getId());
-        //not sure what to do here
+        //not editing bids here
+        //set startingPrice
         if (auction.getUser() != null) {
             auctionDTO.setUserId(auction.getUser().getId());
         }
