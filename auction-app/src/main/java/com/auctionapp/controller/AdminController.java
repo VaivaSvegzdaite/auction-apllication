@@ -1,7 +1,6 @@
 package com.auctionapp.controller;
 
 import com.auctionapp.model.auction.Auction;
-import com.auctionapp.model.auction.AuctionDTO;
 import com.auctionapp.model.login.UserDTO;
 import com.auctionapp.service.AdminService;
 import com.auctionapp.service.AuctionService;

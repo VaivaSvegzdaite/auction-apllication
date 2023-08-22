@@ -1,24 +1,16 @@
 package com.auctionapp.service;
 
 import com.auctionapp.model.login.MessageResponseDTO;
-import com.auctionapp.model.login.SignupRequestDTO;
 import com.auctionapp.model.login.UserDTO;
-import com.auctionapp.model.role.ERole;
-import com.auctionapp.model.role.Role;
-import com.auctionapp.model.user.User;
-import com.auctionapp.repository.RoleRepository;
 import com.auctionapp.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -27,17 +19,11 @@ public class AdminService {
 
     private static final Logger logger = LoggerFactory.getLogger(AdminService.class);
     private final UserRepository userRepository;
-    private final PasswordEncoder encoder;
-
-    private final RoleRepository roleRepository;
 
 
-    public AdminService(UserRepository userRepository, PasswordEncoder encoder, RoleRepository roleRepository) {
+    public AdminService(UserRepository userRepository) {
         this.userRepository = userRepository;
-        this.encoder = encoder;
-        this.roleRepository = roleRepository;
     }
-
 
 
     @Transactional(readOnly = true)
