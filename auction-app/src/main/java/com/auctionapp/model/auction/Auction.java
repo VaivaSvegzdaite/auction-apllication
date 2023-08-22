@@ -23,7 +23,7 @@ public class Auction {
 
     @Basic
     @Column(name = "type")
-    private String type;
+    private EAuctionType type;
 
     @Basic
     @Column (name = "start_time")

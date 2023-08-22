@@ -2,6 +2,7 @@ package com.auctionapp.controller;
 
 import com.auctionapp.model.auction.Auction;
 import com.auctionapp.model.auction.AuctionDTO;
+import com.auctionapp.model.bid.BidDTO;
 import com.auctionapp.service.AuctionService;
 import com.auctionapp.service.BidService;
 import com.auctionapp.service.UserService;
@@ -17,9 +18,7 @@ import java.util.Optional;
 @RequestMapping("/api/auction")
 public class AuctionController {
     public final AuctionService auctionService;
-
     public final UserService userService;
-
     public final BidService bidService;
 
     public AuctionController(AuctionService auctionService, UserService userService, BidService bidService) {
@@ -30,16 +29,17 @@ public class AuctionController {
 
     @GetMapping("/")
     public ResponseEntity<List<AuctionDTO>> getAllAuctions() {
-        List<Auction> auctions = auctionService.getAllAuctions();
-        List<AuctionDTO> listOfAuctionResponses = convertToDTOList(auctions);
-        return ResponseEntity.ok(listOfAuctionResponses);
+        List<AuctionDTO> auctions = auctionService.getAllAuctions();
+        return ResponseEntity.ok(auctions);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<AuctionDTO> getAuctionById(@PathVariable Long id) {
-        Optional<Auction> optionalAuction = auctionService.getAuctionById(id);
-        return optionalAuction.map(auction -> ResponseEntity.ok(convertToDTO(auction)))
-                .orElse(ResponseEntity.notFound().build());
+        AuctionDTO auction = auctionService.getAuctionById(id);
+        if (auction == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(auction);
     }
 
     @PostMapping("/")
@@ -89,25 +89,5 @@ public class AuctionController {
         }
     }
 
-    private AuctionDTO convertToDTO(Auction auction) {
-        AuctionDTO auctionDTO = new AuctionDTO();
-        auctionDTO.setId(auction.getId());
-        auctionDTO.setType(auction.getType());
-        auctionDTO.setStartTime(auction.getStartTime());
-        auctionDTO.setEndTime(auction.getEndTime());
-        //auctionDTO.setBidId(auction.getBids().getId());
-        //not sure what to do here
-        if (auction.getUser() != null) {
-            auctionDTO.setUserId(auction.getUser().getId());
-        }
-        return auctionDTO;
-    }
 
-    private List<AuctionDTO> convertToDTOList(List<Auction> auctions) {
-        List<AuctionDTO> auctionDTOList = new ArrayList<>();
-        for (Auction auction : auctions) {
-            auctionDTOList.add(convertToDTO(auction));
-        }
-        return auctionDTOList;
-    }
 }
