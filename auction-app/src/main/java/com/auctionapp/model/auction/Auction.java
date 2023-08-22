@@ -38,6 +38,6 @@ public class Auction {
     private User user;
 
     @OneToMany
-    @JoinColumn(name="bid_id", referencedColumnName = "id")
+    @JoinColumn(name="auction_id", referencedColumnName = "id") //this column will be in table bid
     private List<Bid> bids;
 }
