@@ -20,9 +20,6 @@ class ProductDTOTest {
         productDTO.setName("Example Product");
         assertEquals("Example Product", productDTO.getName());
 
-        productDTO.setStarting_price(100.0);
-        assertEquals(100.0, productDTO.getStarting_price(), 0.001);
-
         productDTO.setDescription("Description for testing.");
         assertEquals("Description for testing.", productDTO.getDescription());
 

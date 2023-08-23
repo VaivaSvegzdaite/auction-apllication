@@ -43,7 +43,7 @@ public class ProductController {
     }
 
     @PostMapping("/")
-    public ResponseEntity<String> createProduct(@RequestBody @Valid Product product, BindingResult bindingResult) {
+    public ResponseEntity<?> createProduct(@RequestBody @Valid Product product, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return ResponseEntity.badRequest().
                     body(bindingResult.
@@ -52,7 +52,7 @@ public class ProductController {
                             map(ObjectError::getDefaultMessage).
                             collect(Collectors.joining()));
         }
-        ResponseEntity<String> response = productService.createProduct(product);
+        var response = productService.createProduct(product);
         return response;
     }
 

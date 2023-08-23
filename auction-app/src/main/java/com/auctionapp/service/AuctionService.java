@@ -74,6 +74,9 @@ public class AuctionService {
         if (auction.getUser() != null) {
             auctionDTO.setUserId(auction.getUser().getId());
         }
+        if (auction.getProduct() != null) {
+            auctionDTO.setProductId(auction.getProduct().getId());
+        }
         return auctionDTO;
     }
 
