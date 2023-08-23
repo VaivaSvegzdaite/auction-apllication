@@ -24,7 +24,7 @@ public class Product {
     @Basic
     @Column(name = "name")
     @NotBlank(message = "Name is mandatory")
-    @Size(min = 4, max = 50, message = "Name must be between 4 and 50 characters")
+    @Size(min = 3, max = 50, message = "Name must be between 4 and 50 characters")
     @Pattern(regexp = "^(?!.*  )(?!\\s)(?!.*\\s$)[\\p{Alpha} ]*$", message = "Invalid name format. " +
             "Name should contain only alphabets and space. Not start, end with space and should not contain consecutive spaces.  ")
     private String name;
