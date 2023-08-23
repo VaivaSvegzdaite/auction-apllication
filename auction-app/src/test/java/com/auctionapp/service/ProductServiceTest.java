@@ -41,7 +41,7 @@ class ProductServiceTest {
 
         when(userService.getUserById(product.getUser().getId())).thenReturn(Optional.empty());
 
-        ResponseEntity<String> response = productService.createProduct(product);
+        ResponseEntity<?> response = productService.createProduct(product);
 
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
         assertEquals("User for adding product doesnt exist", response.getBody());
