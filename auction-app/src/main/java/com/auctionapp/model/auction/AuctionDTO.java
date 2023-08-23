@@ -14,6 +14,7 @@ public class AuctionDTO {
     private Date startTime;
     private Date endTime;
     private double startingPrice;
+    private Long productId;
     private Long userId;
     private List<Long> bidId;
 }
