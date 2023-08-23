@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
-import ProductCard from "./components/product/ProductCard";
-import AddProduct from "./components/product/AddProduct";
+import ProductCard from "./components/ProductCard";
+import AddProduct from "./components/AddProduct";
 import axios from "axios";
 
-export default function CreateAuctionProduct({currentUser}) {
+export default function NewProduct({currentUser}) {
     const [products, setProducts] = useState();
 
     useEffect(() => {
@@ -24,7 +24,7 @@ export default function CreateAuctionProduct({currentUser}) {
                     <h4 className="pt-4">Choose a saved product to auction</h4>
                     <>List of products to choose for auction</>
                     {products && products.map(product => {
-                        return <ProductCard product={product}/>
+                        return <ProductCard product={product} key={product.id}/>
                     })}
                 </div>
                 <div className="col">

@@ -1,4 +1,4 @@
-export default function AddAuction() {
+export default function NewAuction({currentUser}) {
 
 
     return (        
