@@ -19,7 +19,7 @@ const productCategories = [
 ]
 
 
-export default function AddProduct({currentUser}) {
+export default function AddProduct({currentUser, setProducts}) {
 
     const [ imgUrl, setImgUrl ] = useState();
     const [ product, setProduct ] = useState(() => ({
@@ -53,7 +53,7 @@ export default function AddProduct({currentUser}) {
             ).then(response => {
                 setIsLoading(false);
                 setRequestState({reqSent: true, isError: false, resMessage: "Product successfully created" });
-                console.log(response.data)
+                setProducts(prev => ([... prev, response.data]))
                 setProduct({
                     name: '',
                     description: '',
@@ -71,7 +71,7 @@ export default function AddProduct({currentUser}) {
     
 
     return (        
-        <div className="card card-container">
+        <div className="card card-container mt-4">
             <Form
                 onSubmit={submitProduct}
             >
@@ -133,7 +133,8 @@ export default function AddProduct({currentUser}) {
                     </select>
                 </div>
 
-                <div className="form-group">
+                <div className="form-group mb-4">
+                    <label htmlFor="img">Image</label>
                     <UploadPicWidget setImgUrl={setImgUrl}/>
                     {imgUrl && 
                         <div className="alert alert-success" role="alert">
