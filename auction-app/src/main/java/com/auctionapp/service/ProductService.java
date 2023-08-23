@@ -28,7 +28,6 @@ public class ProductService {
         if (product.getId() != null && product.getId() != 0) {
             return ResponseEntity.badRequest().body("Invalid product ID");
         }
-        //productRepository.save(product);
         Long userId = product.getUser().getId();
         Optional<User> user = userService.getUserById(userId);
         if (user.isEmpty()) {
