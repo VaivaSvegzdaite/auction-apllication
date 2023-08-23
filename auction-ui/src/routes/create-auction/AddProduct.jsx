@@ -25,10 +25,16 @@ export default function AddProduct({currentUser}) {
     const [ product, setProduct ] = useState(() => ({
         name: '',
         description: '',
-        startingPrice: 1,
         category: 'ANTIQUES'
     }))
+    const [ isNameError, setIsNameError] = useState(false);
     const [ isLoading, setIsLoading] = useState(false);
+    const [ requestState, setRequestState] = useState({
+        reqSent: false,
+        isError: false,
+        resMessage: ''
+    });
+
 
     const submitProduct = (e) => {
         e.preventDefault();
@@ -40,33 +46,28 @@ export default function AddProduct({currentUser}) {
         }
 
         setIsLoading(true);
-        axios.post('http://localhost:8080/api/product/', {
-                data
-            }).then(response => {
-                response.json;
-                setIsLoading(false);
-            })
-            .catch(error => {
-                console.log(error);
-                setIsLoading(false);
-            })
-
-        // fetch('http//:localhost:8080/api/product/', {
-        //     method: "POST",
-        //     headers: {
-        //       "Content-Type": "application/json",
-        //     },
-        //     body: JSON.stringify(data)
-        // }).then(response => {
-        //     response.json;
-        //     setIsLoading(false);
-        // })
-        // .catch(error => {
-        //     console.log(error);
-        //     setIsLoading(false);
-        // })
         
+        axios.post(
+            'http://localhost:8080/api/product/', 
+                data
+            ).then(response => {
+                setIsLoading(false);
+                setRequestState({reqSent: true, isError: false, resMessage: "Product successfully created" });
+                console.log(response.data)
+                setProduct({
+                    name: '',
+                    description: '',
+                    category: 'ANTIQUES'
+                })
+                setImgUrl(null);
+            })
+            .catch(err => {
+                console.log(err.response.data);
+                setIsLoading(false);
+                setRequestState({reqSent: true, isError: true, resMessage: "Network error, try again later"});
+            }) 
     }
+
     
 
     return (
@@ -86,9 +87,23 @@ export default function AddProduct({currentUser}) {
                         value={product.name}
                         onChange={(e) => {
                             setProduct(prev => ({... prev, name: e.target.value}))
-                        }}
+                            const isOnlyCharSpace = /^(?!.*\s{2,})(?!^ )[A-Za-z\s]{1,18}$/.test( e.target.value);
+                            const isCorrectLength =  e.target.value.length >= 3 &&  e.target.value.length <=50;           
+                            if (!isOnlyCharSpace || !isCorrectLength){
+                                setIsNameError(true);
+                            } else { 
+                                setIsNameError(false);
+                             }
+                        }}  
                         required
                     />
+                    {isNameError && (
+                        <div className="alert alert-danger mt-1 text-small" role="alert">
+                            Name should have between 3 and 50 characters.
+                            Name should contain only alphabet letters and spaces.
+                            Name should not start or end with a space and should not contain consecutive spaces.
+                        </div>
+                    )}
                 </div>
 
                 <div className="form-group">
@@ -104,22 +119,6 @@ export default function AddProduct({currentUser}) {
                         required
                     />
                 </div>
-
-                <div className="form-group">
-                    <label htmlFor="starting-price">Starting price</label>
-                    <Input
-                        type="number"
-                        className="form-control"
-                        name="starting-price"
-                        value={product.startingPrice}
-                        onChange={(e) => {
-                            setProduct(prev => ({... prev, startingPrice: Number(e.target.value)}))
-                        }}
-                        min={1}
-                        required
-                    />
-                </div>
-
                 
                 <div className="form-group">
                     <label htmlFor="category">Category</label>
@@ -142,22 +141,30 @@ export default function AddProduct({currentUser}) {
                     {imgUrl && 
                         <div className="alert alert-success" role="alert">
                             Image uploaded successfully
-                        </div>}
+                        </div>
+                    }
                 </div>
-
-                
 
                 <div className="form-group">
                     <button
+                        type="submit"
                         className="btn btn-dark btn-block"
-                        disabled={isLoading}
+                        disabled={isLoading || isNameError || !imgUrl}
                     >
                         {isLoading && (
                             <span className="spinner-border spinner-border-sm"></span>
                         )}
                         <span>Add product</span>
                     </button>
+                    
                 </div>
+                {requestState.reqSent && (
+                    <div className="form-group">
+                        <div className={requestState.isError ? "alert alert-danger" : "alert alert-success"} role="alert">
+                            {requestState.resMessage}
+                        </div>
+                    </div>
+                )}
             </Form>
         </div>
         </div>

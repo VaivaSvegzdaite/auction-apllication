@@ -18,7 +18,7 @@ const UploadPicWidget = ({setImgUrl}) => {
     }, [])
 
     return (
-        <button className="btn btn-primary" onClick={() => widgetRef.current.open()}>Upload an image</button>
+        <div className="btn btn-primary btn-block" onClick={() => widgetRef.current.open()}>Upload an image</div>
     )
 }
 
