@@ -1,16 +1,16 @@
-import React, { Component } from "react";
+import { Component } from "react";
 import { Routes, Route, Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 
 import AuthService from "./services/auth.service";
 
-import Login from "./components/Login.component.jsx";
-import Signup from "./components/Signup.component.jsx";
-import Home from "./components/Home.component.jsx";
-import Profile from "./components/Profile.component.jsx";
-import BoardUser from "./components/Board-user.component.jsx";
-import BoardAdmin from "./components/Board-admin.component.jsx";
+import Login from "./routes/login-signup/Login.component";
+import Signup from "./routes/login-signup/Signup.component";
+import Home from "./routes/home/Home.component.jsx";
+import Profile from "./routes/profile/Profile.component";
+import BoardUser from "./routes/boards/Board-user.component.jsx";
+import BoardAdmin from "./routes/boards/Board-admin.component.jsx";
 import Footer from "./components/Footer.jsx";
 
 class App extends Component {
@@ -67,7 +67,7 @@ class App extends Component {
                             </li>
                         )}
 
-                        {currentUser && (
+                        {!showAdminBoard && currentUser && (
                             <li className="nav-item">
                                 <Link to={"/user"} className="nav-link">
                                     User
