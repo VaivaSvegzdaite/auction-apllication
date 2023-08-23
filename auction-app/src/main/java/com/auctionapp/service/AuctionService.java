@@ -53,7 +53,7 @@ public class AuctionService {
             auction.setType(auctionWithUpdates.getType());
             auction.setStartTime(auctionWithUpdates.getStartTime());
             auction.setEndTime(auctionWithUpdates.getEndTime());
-            //edit startingPrice here
+            auction.setStartingPrice(auctionWithUpdates.getStartingPrice());
             auctionRepository.save(auction);
         }
     }
@@ -70,7 +70,7 @@ public class AuctionService {
         auctionDTO.setStartTime(auction.getStartTime());
         auctionDTO.setEndTime(auction.getEndTime());
         //not editing bids here
-        //set startingPrice
+        auctionDTO.setStartingPrice(auction.getStartingPrice());
         if (auction.getUser() != null) {
             auctionDTO.setUserId(auction.getUser().getId());
         }

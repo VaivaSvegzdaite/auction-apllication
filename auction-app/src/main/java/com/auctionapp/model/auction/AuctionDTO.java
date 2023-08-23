@@ -13,6 +13,7 @@ public class AuctionDTO {
     private EAuctionType type;
     private Date startTime;
     private Date endTime;
+    private double startingPrice;
     private Long userId;
     private List<Long> bidId;
 }

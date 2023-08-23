@@ -2,7 +2,6 @@ package com.auctionapp.controller;
 
 import com.auctionapp.model.auction.Auction;
 import com.auctionapp.model.auction.AuctionDTO;
-import com.auctionapp.model.bid.BidDTO;
 import com.auctionapp.service.AuctionService;
 import com.auctionapp.service.BidService;
 import com.auctionapp.service.UserService;
@@ -28,6 +27,8 @@ public class AuctionController {
     @GetMapping("/")
     public ResponseEntity<List<AuctionDTO>> getAllAuctions() {
         List<AuctionDTO> auctions = auctionService.getAllAuctions();
+        if (auctions.size() == 0)
+            return ResponseEntity.notFound().build();
         return ResponseEntity.ok(auctions);
     }
 
