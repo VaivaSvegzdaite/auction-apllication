@@ -1,6 +1,5 @@
 package com.auctionapp.controller;
 
-import com.auctionapp.model.product.EProductCategory;
 import com.auctionapp.model.product.Product;
 import com.auctionapp.model.product.ProductDTO;
 import com.auctionapp.service.ProductService;
@@ -8,10 +7,10 @@ import com.auctionapp.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -21,7 +20,6 @@ import java.util.stream.Collectors;
 public class ProductController {
 
     public final ProductService productService;
-
     public final UserService userService;
 
     public ProductController(ProductService productService, UserService userService) {
@@ -32,14 +30,14 @@ public class ProductController {
     @GetMapping("/")
     public ResponseEntity<List<ProductDTO>> getAllProducts() {
         List<Product> products = productService.getAllProducts();
-        List<ProductDTO> listOfProductResponses = convertToDTOList(products);
+        List<ProductDTO> listOfProductResponses = productService.convertToDTOList(products);
         return ResponseEntity.ok(listOfProductResponses);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<ProductDTO> getProductById(@PathVariable Long id) {
         Optional<Product> oProduct = productService.getProductById(id);
-        return oProduct.map(product -> ResponseEntity.ok(convertToDTO(product)))
+        return oProduct.map(product -> ResponseEntity.ok(productService.convertToDTO(product)))
                 .orElse(ResponseEntity.notFound().build());
     }
 
@@ -53,16 +51,8 @@ public class ProductController {
                             map(ObjectError::getDefaultMessage).
                             collect(Collectors.joining()));
         }
-        if (product.getId() != null && product.getId() != 0) {
-            return ResponseEntity.badRequest().build();
-        }
-        Long userId = product.getUser().getId();
-        if (userService.getUserById(userId).isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User for adding product doesn't exist");
-        }
-        product.setUrl(product.getUrl());
-        productService.createProduct(product);
-        return ResponseEntity.ok("Product created successfully!");
+        ResponseEntity<String> response = productService.createProduct(product);
+        return response;
     }
 
     @PutMapping("/{id}")
@@ -72,22 +62,16 @@ public class ProductController {
         }
         var oExistingProduct = productService.getProductById(id);
         if (oExistingProduct.isEmpty()) {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product with id nr. " + id + " is not found");
         }
         var existingProduct = oExistingProduct.get();
-        existingProduct.setName(productDTO.getName());
-        existingProduct.setStarting_price(productDTO.getStarting_price());
-        existingProduct.setDescription(productDTO.getDescription());
-        existingProduct.setCategory(EProductCategory.valueOf(productDTO.getCategory()));
-        existingProduct.setUrl(productDTO.getUrl());
-        Long userId = productDTO.getUserId();
-        if (userService.getUserById(userId).isPresent()) {
-            existingProduct.getUser().setId(productDTO.getUserId());
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User for updating product doesn't exist!");
+
+        try {
+            productService.updateProduct(existingProduct, productDTO);
+            return ResponseEntity.ok("Product was updated successfully");
+        } catch (UsernameNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
-        productService.updateProduct(existingProduct);
-        return ResponseEntity.ok("Product was updated successfully!");
     }
 
     @DeleteMapping("/{id}")
@@ -99,28 +83,4 @@ public class ProductController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product for deletion doesn't exist!");
         }
     }
-
-    private ProductDTO convertToDTO(Product product) {
-        ProductDTO productDTO = new ProductDTO();
-        productDTO.setId(product.getId());
-        productDTO.setName(product.getName());
-        productDTO.setStarting_price(product.getStarting_price());
-        productDTO.setDescription(product.getDescription());
-        productDTO.setCategory(String.valueOf(product.getCategory()));
-        productDTO.setUrl(product.getUrl());
-        if (product.getUser() != null) {
-            productDTO.setUserId(product.getUser().getId());
-        }
-        return productDTO;
-    }
-
-    private List<ProductDTO> convertToDTOList(List<Product> products) {
-        List<ProductDTO> productDTOList = new ArrayList<>();
-        for (Product product : products) {
-            productDTOList.add(convertToDTO(product));
-        }
-        return productDTOList;
-    }
-
 }
-
