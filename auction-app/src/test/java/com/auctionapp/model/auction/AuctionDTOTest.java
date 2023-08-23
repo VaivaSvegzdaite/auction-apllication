@@ -52,5 +52,7 @@ public class AuctionDTOTest {
         }
         assertEquals("2023-09-15", dateFormat.format(auctionDTO.getEndTime()));
 
+        auctionDTO.setStartingPrice(15);
+        assertEquals(15, auctionDTO.getStartingPrice());
     }
 }

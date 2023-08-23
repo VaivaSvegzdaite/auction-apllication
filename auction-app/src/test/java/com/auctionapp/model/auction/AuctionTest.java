@@ -49,5 +49,8 @@ public class AuctionTest {
         auction.setType(EAuctionType.RESERVE);
         assertEquals(EAuctionType.RESERVE, auction.getType());
 
+        auction.setStartingPrice(15);
+        assertEquals(15, auction.getStartingPrice());
+
     }
 }
