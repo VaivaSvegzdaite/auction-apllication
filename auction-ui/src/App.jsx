@@ -12,7 +12,7 @@ import Profile from "./routes/profile/Profile.component";
 import BoardUser from "./routes/boards/Board-user.component.jsx";
 import BoardAdmin from "./routes/boards/Board-admin.component.jsx";
 import Footer from "./components/Footer.jsx";
-import AddProduct from "./routes/create-auction/AddProduct"
+import CreateAuctionProduct from "./routes/create-auction/CreateAuctionProduct"
 
 class App extends Component {
     constructor(props) {
@@ -81,7 +81,7 @@ class App extends Component {
                         <div className="navbar-nav ml-auto">
                             <li className="nav-item">
                                 <Link to={"/add-product"} className="nav-link">
-                                    Add Product
+                                    New Product
                                 </Link>
                             </li>
                             <li className="nav-item">
@@ -119,7 +119,7 @@ class App extends Component {
                         <Route path="/login" element={<Login />} />
                         <Route path="/signup" element={<Signup />} />
                         <Route path="/profile" element={<Profile />} />
-                        <Route path="/add-product" element={<AddProduct currentUser={currentUser}/>} />
+                        <Route path="/add-product" element={<CreateAuctionProduct currentUser={currentUser}/>} />
                         <Route path="/user" element={<BoardUser />} />
                         <Route path="/admin" element={<BoardAdmin />} />
                     </Routes>

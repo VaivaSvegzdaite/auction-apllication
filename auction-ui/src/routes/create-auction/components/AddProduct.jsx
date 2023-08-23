@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Form from "react-validation/build/form";
 import Input from "react-validation/build/input";
-import UploadPicWidget from "./components/UploadPicWidget";
+import UploadPicWidget from "./UploadPicWidget";
 import axios from "axios";
 
 const productCategories = [
@@ -70,10 +70,7 @@ export default function AddProduct({currentUser}) {
 
     
 
-    return (
-        <div className="container">
-        <h3 className="pt-4">Add a product</h3>
-        
+    return (        
         <div className="card card-container">
             <Form
                 onSubmit={submitProduct}
@@ -166,7 +163,6 @@ export default function AddProduct({currentUser}) {
                     </div>
                 )}
             </Form>
-        </div>
         </div>
 )
 }
