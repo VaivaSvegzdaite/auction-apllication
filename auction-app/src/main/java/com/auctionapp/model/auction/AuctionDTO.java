@@ -10,9 +10,11 @@ import java.util.List;
 @Setter
 public class AuctionDTO {
     private Long id;
-    private String type;
+    private EAuctionType type;
     private Date startTime;
     private Date endTime;
+    private double startingPrice;
+    private Long productId;
     private Long userId;
     private List<Long> bidId;
 }
