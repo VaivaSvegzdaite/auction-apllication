@@ -24,7 +24,7 @@ public class ProductService {
         this.userService = userService;
     }
 
-    public ResponseEntity<String> createProduct(Product product) {
+    public ResponseEntity<?> createProduct(Product product) {
         if (product.getId() != null && product.getId() != 0) {
             return ResponseEntity.badRequest().body("Invalid product ID");
         }
@@ -34,7 +34,7 @@ public class ProductService {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User for adding product doesnt exist");
         }
         productRepository.save(product);
-        return ResponseEntity.ok(product.getId().toString());
+        return ResponseEntity.ok(convertToDTO(product));
     }
 
     public List<Product> getAllProducts() {
