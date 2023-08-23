@@ -27,8 +27,6 @@ public class AuctionController {
     @GetMapping("/")
     public ResponseEntity<List<AuctionDTO>> getAllAuctions() {
         List<AuctionDTO> auctions = auctionService.getAllAuctions();
-        if (auctions.size() == 0)
-            return ResponseEntity.notFound().build();
         return ResponseEntity.ok(auctions);
     }
 

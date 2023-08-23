@@ -3,10 +3,9 @@ package com.auctionapp.service;
 import com.auctionapp.model.auction.Auction;
 import com.auctionapp.model.auction.AuctionDTO;
 import com.auctionapp.repository.AuctionRepository;
-import com.auctionapp.repository.BidRepository;
-import com.auctionapp.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -15,14 +14,10 @@ import java.util.Optional;
 public class AuctionService {
 
     private final AuctionRepository auctionRepository;
-    private final UserRepository userRepository;
-    private final BidRepository bidRepository;
 
-    public AuctionService (AuctionRepository auctionRepository, UserRepository userRepository, BidRepository bidRepository)
+    public AuctionService (AuctionRepository auctionRepository)
     {
         this.auctionRepository = auctionRepository;
-        this.userRepository = userRepository;
-        this.bidRepository = bidRepository;
     }
 
     public Auction createAuction (Auction auction)
