@@ -1,43 +1,23 @@
-import React, { Component } from "react";
+import React from "react";
+import UsersComponent from "../admin/users/Users.component.jsx";
+import Profile from "../profile/Profile.component.jsx";
 
-import UserService from "../../services/user.service";
+export default function BoardAdmin() {
 
-export default class BoardAdmin extends Component {
-    constructor(props) {
-        super(props);
+    return (
+        <div className="row">
+        <div className="card w-75">
 
-        this.state = {
-            content: ""
-        };
-    }
-
-    componentDidMount() {
-        UserService.getAdminBoard().then(
-            response => {
-                this.setState({
-                    content: response.data
-                });
-            },
-            error => {
-                this.setState({
-                    content:
-                        (error.response &&
-                            error.response.data &&
-                            error.response.data.message) ||
-                        error.message ||
-                        error.toString()
-                });
-            }
-        );
-    }
-
-    render() {
-        return (
-            <div className="container">
-                <header className="jumbotron">
-                    <h3>{this.state.content}</h3>
-                </header>
+            <div className="row">
+                <div className="col-md-3">
+                    <Profile/>
+                </div>
+                <div className="col-md-9">
+                    <h4 className="text-center">Users</h4>
+                    <UsersComponent/>
+             </div>
             </div>
-        );
-    }
+        </div>
+        </div>
+    );
 }
