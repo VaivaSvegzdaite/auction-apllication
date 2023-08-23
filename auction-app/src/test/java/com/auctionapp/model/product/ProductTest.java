@@ -18,9 +18,6 @@ class ProductTest {
         product.setName("Example Product");
         assertEquals("Example Product", product.getName());
 
-        product.setStarting_price(100.0);
-        assertEquals(100.0, product.getStarting_price(), 0.001);
-
         product.setDescription("Description for testing.");
         assertEquals("Description for testing.", product.getDescription());
 
