@@ -34,7 +34,7 @@ public class ProductService {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User for adding product doesnt exist");
         }
         productRepository.save(product);
-        return ResponseEntity.ok("Product created successfully");
+        return ResponseEntity.ok(product.getId().toString());
     }
 
     public List<Product> getAllProducts() {
