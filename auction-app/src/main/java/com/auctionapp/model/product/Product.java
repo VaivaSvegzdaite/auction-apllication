@@ -30,11 +30,6 @@ public class Product {
     private String name;
 
     @Basic
-    @Column(name = "starting_price")
-    @Min(value = 1, message = "Price should not be less than 1 EUR")
-    private double starting_price;
-
-    @Basic
     @Column(name = "description")
     private String description;
 
