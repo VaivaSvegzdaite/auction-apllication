@@ -1,5 +1,6 @@
 package com.auctionapp.controller;
 
+import com.auctionapp.model.product.EProductCategory;
 import com.auctionapp.model.product.Product;
 import com.auctionapp.model.product.ProductDTO;
 import com.auctionapp.service.ProductService;
@@ -46,6 +47,13 @@ public class ProductController {
         List<ProductDTO> listOfProductNameResponse =  productService.getProductByName(name);
         return ResponseEntity.ok(listOfProductNameResponse);
     }
+
+    @GetMapping("search/{category}")
+    public ResponseEntity<List<ProductDTO>> getProductByCategory(EProductCategory category) {
+        List<ProductDTO> listOfProductCategoryResponse = productService.getProductByCategory(category);
+        return ResponseEntity.ok(listOfProductCategoryResponse);
+    }
+
 
     @PostMapping("/")
     public ResponseEntity<String> createProduct(@RequestBody @Valid Product product, BindingResult bindingResult) {

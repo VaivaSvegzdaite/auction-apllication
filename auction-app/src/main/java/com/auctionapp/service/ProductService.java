@@ -7,7 +7,6 @@ import com.auctionapp.model.user.User;
 import com.auctionapp.repository.ProductRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.method.P;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
@@ -47,14 +46,23 @@ public class ProductService {
     }
 
     public List<ProductDTO> getProductByName(String name) {
-        List<Product> products = productRepository.findByAllNames(name);
+        List<Product> products = productRepository.findByName(name);
 
-        /*if (products.isEmpty()) {
+        if (products.isEmpty()) {
             products = productRepository.findByAllNames(name);
-        }*/
+        }
 
         if (products.isEmpty()) {
             throw new RuntimeException("No products found with name: " + name);
+        }
+        return convertToDTOList(products);
+    }
+
+    public List<ProductDTO> getProductByCategory(EProductCategory category) {
+        List<Product> products = productRepository.findByCategory(category);
+
+        if (products.isEmpty()) {
+            throw new RuntimeException("No products found in category: " + category);
         }
         return convertToDTOList(products);
     }
