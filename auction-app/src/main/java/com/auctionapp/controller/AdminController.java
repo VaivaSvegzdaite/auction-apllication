@@ -1,9 +1,7 @@
 package com.auctionapp.controller;
 
-import com.auctionapp.model.auction.Auction;
 import com.auctionapp.model.login.UserDTO;
 import com.auctionapp.service.AdminService;
-import com.auctionapp.service.AuctionService;
 import com.auctionapp.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,12 +23,9 @@ public class AdminController {
 
     private final UserService userService;
 
-    private final AuctionService auctionService;
-
-    public AdminController(AdminService adminService, UserService userService, AuctionService auctionService) {
+    public AdminController(AdminService adminService, UserService userService) {
         this.adminService = adminService;
         this.userService = userService;
-        this.auctionService = auctionService;
     }
 
     @GetMapping("/users")
@@ -39,30 +34,12 @@ public class AdminController {
         return adminService.getUsers();
     }
 
-
     @DeleteMapping("/users/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> deleteUser(@PathVariable final Long id) {
         var oUser = userService.getUserById(id);
         if (oUser.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User for deletion not found");
-        }
-        return adminService.deleteUser(id);
-    }
-
-    @GetMapping("/auctions")
-    @PreAuthorize("hasRole('ADMIN')")
-    public Collection<Auction> getAuctions() {
-        return auctionService.getAllAuctions();
-    }
-
-
-    @DeleteMapping("/auctions/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<?> deleteAuction(@PathVariable final Long id) {
-        var oAuction = auctionService.getAuctionById(id);
-        if (oAuction.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Auction for deletion not found");
         }
         return adminService.deleteUser(id);
     }

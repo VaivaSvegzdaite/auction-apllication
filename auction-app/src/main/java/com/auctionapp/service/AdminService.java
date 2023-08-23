@@ -2,10 +2,13 @@ package com.auctionapp.service;
 
 import com.auctionapp.model.login.MessageResponseDTO;
 import com.auctionapp.model.login.UserDTO;
+import com.auctionapp.model.user.User;
 import com.auctionapp.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
