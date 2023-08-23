@@ -41,6 +41,12 @@ public class ProductController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+   @GetMapping("/search/{name}")
+    public ResponseEntity<List<ProductDTO>> getProductByName(@PathVariable String name) {
+        List<ProductDTO> listOfProductNameResponse =  productService.getProductByName(name);
+        return ResponseEntity.ok(listOfProductNameResponse);
+    }
+
     @PostMapping("/")
     public ResponseEntity<String> createProduct(@RequestBody @Valid Product product, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {

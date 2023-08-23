@@ -7,6 +7,7 @@ import com.auctionapp.model.user.User;
 import com.auctionapp.repository.ProductRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.method.P;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
@@ -43,6 +44,19 @@ public class ProductService {
 
     public Optional<Product> getProductById(Long id) {
         return productRepository.findById(id);
+    }
+
+    public List<ProductDTO> getProductByName(String name) {
+        List<Product> products = productRepository.findByAllNames(name);
+
+        /*if (products.isEmpty()) {
+            products = productRepository.findByAllNames(name);
+        }*/
+
+        if (products.isEmpty()) {
+            throw new RuntimeException("No products found with name: " + name);
+        }
+        return convertToDTOList(products);
     }
 
     public void updateProduct(Product existingProduct, ProductDTO productDTO) {
@@ -84,4 +98,5 @@ public class ProductService {
         }
         return productDTOList;
     }
+
 }
