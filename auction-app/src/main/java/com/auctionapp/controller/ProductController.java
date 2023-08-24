@@ -41,6 +41,12 @@ public class ProductController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<List<ProductDTO>> getProductsByUserId(@PathVariable Long userId) {
+        List<ProductDTO> products = productService.getProductsByUserId(userId);
+        return ResponseEntity.ok(products);
+    }
+
     @PostMapping("/")
     public ResponseEntity<?> createProduct(@RequestBody @Valid Product product, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {

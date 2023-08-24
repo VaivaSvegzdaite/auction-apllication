@@ -41,6 +41,16 @@ public class ProductService {
         return productRepository.findAll();
     }
 
+    public List<ProductDTO> getProductsByUserId (Long userId) {
+        List<ProductDTO> allProducts = convertToDTOList(productRepository.findAll());
+        List<ProductDTO> productsByUserId = new ArrayList<ProductDTO>();
+        for (ProductDTO product: allProducts) {
+            if (product.getUserId() == userId)
+                productsByUserId.add(product);
+        }
+        return productsByUserId;
+    }
+
     public Optional<Product> getProductById(Long id) {
         return productRepository.findById(id);
     }
