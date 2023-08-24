@@ -22,8 +22,7 @@ export default function MyProducts({currentUser}) {
         <div className="container">
             <div className="row">
                 <div className="col-8">
-                    <h4 className="pt-4">Choose a saved product to auction</h4>
-                    <>List of products to choose for auction</>
+                    <h4 className="pt-4">List of saved products to auction</h4>
                     {products && products.map(product => {
                         return <ProductCard product={product} key={product.id}/>
                     })}

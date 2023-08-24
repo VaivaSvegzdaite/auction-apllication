@@ -10,6 +10,11 @@ export default function NewAuction({currentUser}) {
     const [product, setProduct] = useState();
     const [activeAuction, setActiveAuction] = useState();
     const [isFormOpen, setIsFormOpen] = useState(false);
+    const [ requestState, setRequestState] = useState({
+        reqSent: false,
+        isError: false,
+        resMessage: ''
+    });
 
     useEffect(() => {
         axios.get(
@@ -33,9 +38,9 @@ export default function NewAuction({currentUser}) {
 
     return (        
         <div className="container">
-            <h4 className="pt-4">Create an auction for:</h4>
+            <h5 className="pt-4">Create or update an auction for the following product:</h5>
            {product && (
-                <div className="card">
+                <div className="card mt-4">
                     <div className="row">
                         <div className="col-md-4">
                             <img src={product.url} className="card-img" alt=""/>
@@ -47,7 +52,7 @@ export default function NewAuction({currentUser}) {
                             </div>
                         </div>
                         <div className="col-md-4">
-                            { activeAuction && 
+                            { activeAuction && !isFormOpen &&
                                 <>
                                     <h6 className="card-title pt-3 pl-3">This product is already in auction:</h6>
                                     <div className="card-body">
@@ -56,18 +61,32 @@ export default function NewAuction({currentUser}) {
                                         <p className="card-text"><strong>Start:</strong> {format(new Date(activeAuction.startTime), 'EEE, dd MMMM yyyy - HH:mm')}</p>
                                         <p className="card-text"><strong>End:</strong> {format(new Date(activeAuction.endTime), 'EEE, dd MMMM yyyy - HH:mm')}</p>
                                     </div> 
+                                    <button 
+                                        className="btn btn-dark btn-block" 
+                                        type="button" 
+                                        onClick={() => setIsFormOpen(!isFormOpen)}
+                                    >
+                                        {activeAuction ? "Update auction" : "Create new auction"}
+                                    </button>
+                                    {requestState.reqSent && (
+                                        <div className="form-group">
+                                            <div className={requestState.isError ? "alert alert-danger" : "alert alert-success"} role="alert">
+                                                {requestState.resMessage}
+                                            </div>
+                                        </div>
+                                    )}
                                 </>
                             }
-                            <button 
-                                className="btn btn-dark btn-block" 
-                                type="button" 
-                                onClick={() => setIsFormOpen(!isFormOpen)}
-                                disabled={activeAuction}
-                            >
-                                Create new auction
-                            </button>
                             { isFormOpen && 
-                                <CreateAuction  productId={productId} userId={currentUser.id} setActiveAuction={setActiveAuction}/>
+                                <CreateAuction  
+                                    productId={productId} 
+                                    userId={currentUser.id} 
+                                    activeAuction={activeAuction} 
+                                    setActiveAuction={setActiveAuction} 
+                                    variant={activeAuction ? "UPDATE" : "CREATE"}
+                                    setIsFormOpen={setIsFormOpen}
+                                    setRequestState={setRequestState}
+                                />
                             }
                         </div>
                     </div>

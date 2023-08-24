@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Form from "react-validation/build/form";
 import Input from "react-validation/build/input";
 import axios from "axios";
@@ -8,7 +8,15 @@ const auctionTypes = [
     "RESERVE"
 ]
 
-export default function CreateAuction({productId, userId, setActiveAuction}) {
+export default function CreateAuction({
+    productId, 
+    userId, 
+    activeAuction, 
+    setActiveAuction, 
+    variant, 
+    setIsFormOpen, 
+    setRequestState}) {
+
     const [ auction, setAuction ] = useState(() => ({
         type: "STANDARD",
         startTime: "yyyy-MM-ddThh:mm",
@@ -19,11 +27,6 @@ export default function CreateAuction({productId, userId, setActiveAuction}) {
     }))
     const [ isTimeError, setIsTimeError ] = useState(false);
     const [ isLoading, setIsLoading] = useState(false);
-    const [ requestState, setRequestState] = useState({
-        reqSent: false,
-        isError: false,
-        resMessage: ''
-    });
 
     const checkValidPeriod = (start, end) => {
         const startTime = new Date(start);
@@ -35,6 +38,12 @@ export default function CreateAuction({productId, userId, setActiveAuction}) {
         const d = new Date().toISOString()
         return d.substring(0, 16)
     }
+
+    useEffect(() => {
+        if (variant === "UPDATE") {
+            setAuction({...activeAuction})
+        }
+    }, [])
     
     const submitAuction = (e) => {
         e.preventDefault();
@@ -42,8 +51,8 @@ export default function CreateAuction({productId, userId, setActiveAuction}) {
         const data = {...auction}
 
         setIsLoading(true);
-        
-        axios.post(
+        if (variant === "CREATE") {
+            axios.post(
             'http://localhost:8080/api/auction/', 
                 data
             ).then(response => {
@@ -64,6 +73,23 @@ export default function CreateAuction({productId, userId, setActiveAuction}) {
                 setIsLoading(false);
                 setRequestState({reqSent: true, isError: true, resMessage: "Network error, try again later"});
             }) 
+        } else if (variant === "UPDATE") {
+            axios.put(
+                `http://localhost:8080/api/auction/${activeAuction.id}`, 
+                    data
+                ).then(response => {
+                    setIsLoading(false);
+                    setActiveAuction(response.data);
+                    setRequestState({reqSent: true, isError: false, resMessage: "Auction successfully updated" });
+                })
+                .catch(err => {
+                    console.log(err);
+                    setIsLoading(false);
+                    setRequestState({reqSent: true, isError: true, resMessage: "Network error, try again later"});
+                })
+        }
+        setIsLoading(false);
+        setIsFormOpen(false);
     }
 
     return (
@@ -108,7 +134,7 @@ export default function CreateAuction({productId, userId, setActiveAuction}) {
                     name="price"
                     min={1}
                     placeholder="0.00 €"
-                    value={auction.price}
+                    value={auction.startingPrice}
                     onChange={(e) => {
                         setAuction(prev => ({... prev, startingPrice: Number(e.target.value)}))
                     }}  
@@ -166,17 +192,10 @@ export default function CreateAuction({productId, userId, setActiveAuction}) {
                     {isLoading && (
                         <span className="spinner-border spinner-border-sm"></span>
                     )}
-                    <span>Create auction</span>
+                    {variant === "CREATE" ? "Create auction" : "Update auction"}
                 </button>
                 
             </div>
-            {requestState.reqSent && (
-                <div className="form-group">
-                    <div className={requestState.isError ? "alert alert-danger" : "alert alert-success"} role="alert">
-                        {requestState.resMessage}
-                    </div>
-                </div>
-            )}
         </Form>
     )
 }
