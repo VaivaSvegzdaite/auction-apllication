@@ -12,7 +12,8 @@ import Profile from "./routes/profile/Profile.component";
 import BoardUser from "./routes/boards/Board-user.component.jsx";
 import BoardAdmin from "./routes/boards/Board-admin.component.jsx";
 import Footer from "./components/Footer.jsx";
-import MyProducts from "./routes/new-product/MyProducts";
+import MyProducts from "./routes/my-products/MyProducts";
+import NewProduct from "./routes/new-product/NewProduct";
 import NewAuction from "./routes/new-auction/NewAuction";
 
 class App extends Component {
@@ -121,6 +122,7 @@ class App extends Component {
                         <Route path="/signup" element={<Signup />} />
                         <Route path="/profile" element={<Profile />} />
                         <Route path="/my-products" element={<MyProducts currentUser={currentUser}/>} />
+                        <Route path="/new-product" element={<NewProduct currentUser={currentUser}/>} />
                         <Route path="/new-auction/:productId" element={<NewAuction currentUser={currentUser}/>} />
                         <Route path="/user" element={<BoardUser />} />
                         <Route path="/admin" element={<BoardAdmin />} />

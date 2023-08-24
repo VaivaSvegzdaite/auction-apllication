@@ -1,6 +1,5 @@
 export default function ProductCard({product}) {
 
-    console.log(product)
     return (
         <div className="card pb-2 my-4">
             <div className="row g-0">

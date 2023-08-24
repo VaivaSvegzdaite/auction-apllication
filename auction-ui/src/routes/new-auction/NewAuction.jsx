@@ -61,13 +61,6 @@ export default function NewAuction({currentUser}) {
                                         <p className="card-text"><strong>Start:</strong> {format(new Date(activeAuction.startTime), 'EEE, dd MMMM yyyy - HH:mm')}</p>
                                         <p className="card-text"><strong>End:</strong> {format(new Date(activeAuction.endTime), 'EEE, dd MMMM yyyy - HH:mm')}</p>
                                     </div> 
-                                    <button 
-                                        className="btn btn-dark btn-block" 
-                                        type="button" 
-                                        onClick={() => setIsFormOpen(!isFormOpen)}
-                                    >
-                                        {activeAuction ? "Update auction" : "Create new auction"}
-                                    </button>
                                     {requestState.reqSent && (
                                         <div className="form-group">
                                             <div className={requestState.isError ? "alert alert-danger" : "alert alert-success"} role="alert">
@@ -77,6 +70,13 @@ export default function NewAuction({currentUser}) {
                                     )}
                                 </>
                             }
+                            <button 
+                                className="btn btn-dark btn-block" 
+                                type="button" 
+                                onClick={() => setIsFormOpen(!isFormOpen)}
+                            >
+                                {activeAuction ? "Update auction" : "Create new auction"}
+                            </button>
                             { isFormOpen && 
                                 <CreateAuction  
                                     productId={productId} 

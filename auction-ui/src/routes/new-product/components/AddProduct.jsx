@@ -19,7 +19,7 @@ const productCategories = [
 ]
 
 
-export default function AddProduct({currentUser, setProducts}) {
+export default function AddProduct({currentUser, requestState, setRequestState, setAddedProduct}) {
 
     const [ imgUrl, setImgUrl ] = useState();
     const [ product, setProduct ] = useState(() => ({
@@ -29,11 +29,6 @@ export default function AddProduct({currentUser, setProducts}) {
     }))
     const [ isNameError, setIsNameError] = useState(false);
     const [ isLoading, setIsLoading] = useState(false);
-    const [ requestState, setRequestState] = useState({
-        reqSent: false,
-        isError: false,
-        resMessage: ''
-    });
 
 
     const submitProduct = (e) => {
@@ -53,7 +48,7 @@ export default function AddProduct({currentUser, setProducts}) {
             ).then(response => {
                 setIsLoading(false);
                 setRequestState({reqSent: true, isError: false, resMessage: "Product successfully created" });
-                setProducts(prev => ([... prev, response.data]))
+                setAddedProduct(response.data)
                 setProduct({
                     name: '',
                     description: '',
@@ -85,7 +80,7 @@ export default function AddProduct({currentUser, setProducts}) {
                         maxLength={50}
                         onChange={(e) => {
                             setProduct(prev => ({... prev, name: e.target.value}))
-                            const isOnlyCharSpace = /^(?!.*\s{2,})(?!^ )[A-Za-z\s]{1,18}$/.test( e.target.value);
+                            const isOnlyCharSpace = /^(?!.*\s{2,})(?!^ )[A-Za-z\s]{1,50}$/.test( e.target.value);
                             const isCorrectLength =  e.target.value.length >= 3 &&  e.target.value.length <=50;           
                             if (!isOnlyCharSpace ){
                                 setIsNameError(true);
