@@ -3,11 +3,13 @@ import axios from "axios";
 import {useParams} from "react-router-dom";
 import CreateAuction from "./components/CreateAuction";
 import {format} from "date-fns";
+import { Link } from "react-router-dom";
 
 export default function NewAuction({currentUser}) {
     const {productId} = useParams();
     const [product, setProduct] = useState();
-    const [ongoingAuction, setOngoingAuction] = useState();
+    const [activeAuction, setActiveAuction] = useState();
+    const [isFormOpen, setIsFormOpen] = useState(false);
 
     useEffect(() => {
         axios.get(
@@ -17,6 +19,15 @@ export default function NewAuction({currentUser}) {
             })
             .catch(err => {
                 console.log(err.response.data);
+            }) 
+
+        axios.get(
+            `http://localhost:8080/api/auction/product/${productId}`
+            ).then(response => {
+                setActiveAuction(response.data[0])
+            })
+            .catch(err => {
+                console.log(err);
             }) 
     }, [])
 
@@ -28,32 +39,41 @@ export default function NewAuction({currentUser}) {
                     <div className="row">
                         <div className="col-md-4">
                             <img src={product.url} className="card-img" alt=""/>
-                            {ongoingAuction && <h6 className="card-title">This product is already in auction</h6>}
                         </div>
                         <div className="col-md-4">
                             <div className="card-body">
                                 <h5 className="card-title">{product.name}</h5>
-                                <p className="card-text">{product.description}</p>
-                                {ongoingAuction && (
-                                    <div className="card">
-                                        <div className="card-body">
-                                        <h5 className="card-title text-center">Auction</h5>
-                                        <p className="card-text"><strong>Type:</strong> {ongoingAuction.type}</p>
-
-                                        <p className="card-text"><strong>Minimum price:</strong> {ongoingAuction.startingPrice} €</p>
-                                        <p className="card-text"><strong>Start:</strong> {format(new Date(ongoingAuction.startTime), 'MMM dd, yyyy - hh:mm')}</p>
-                                        <p className="card-text"><strong>End:</strong> {format(new Date(ongoingAuction.endTime), 'MMM dd, yyyy - hh:mm')}</p>
-                                        </div>
-                                    </div>   
-                                )}
+                                <p className="card-text">{product.description}</p>   
                             </div>
                         </div>
                         <div className="col-md-4">
-                            <CreateAuction productId={productId} userId={currentUser.id} setOngoingAuction={setOngoingAuction}/>
+                            { activeAuction && 
+                                <>
+                                    <h6 className="card-title pt-3 pl-3">This product is already in auction:</h6>
+                                    <div className="card-body">
+                                        <p className="card-text"><strong>Auction type:</strong> {activeAuction.type}</p>
+                                        <p className="card-text"><strong>Minimum price:</strong> {activeAuction.startingPrice} €</p>
+                                        <p className="card-text"><strong>Start:</strong> {format(new Date(activeAuction.startTime), 'EEE, dd MMMM yyyy - HH:mm')}</p>
+                                        <p className="card-text"><strong>End:</strong> {format(new Date(activeAuction.endTime), 'EEE, dd MMMM yyyy - HH:mm')}</p>
+                                    </div> 
+                                </>
+                            }
+                            <button 
+                                className="btn btn-dark btn-block" 
+                                type="button" 
+                                onClick={() => setIsFormOpen(!isFormOpen)}
+                                disabled={activeAuction}
+                            >
+                                Create new auction
+                            </button>
+                            { isFormOpen && 
+                                <CreateAuction  productId={productId} userId={currentUser.id} setActiveAuction={setActiveAuction}/>
+                            }
                         </div>
                     </div>
                 </div>  
             )}
+            <Link to="/my-products" className="link text-dark">Back to my products</Link>
         </div>
     )
 }

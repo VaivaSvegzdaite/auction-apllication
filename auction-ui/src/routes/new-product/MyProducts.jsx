@@ -3,12 +3,13 @@ import ProductCard from "./components/ProductCard";
 import AddProduct from "./components/AddProduct";
 import axios from "axios";
 
-export default function NewProduct({currentUser}) {
+export default function MyProducts({currentUser}) {
     const [products, setProducts] = useState();
+    const userId = currentUser.id;
 
     useEffect(() => {
         axios.get(
-            'http://localhost:8080/api/product/'
+            `http://localhost:8080/api/product/user/${userId}`
             ).then(response => {
                 setProducts(response.data)
             })

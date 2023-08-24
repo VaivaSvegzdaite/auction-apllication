@@ -8,7 +8,7 @@ const auctionTypes = [
     "RESERVE"
 ]
 
-export default function CreateAuction({productId, userId, setOngoingAuction}) {
+export default function CreateAuction({productId, userId, setActiveAuction}) {
     const [ auction, setAuction ] = useState(() => ({
         type: "STANDARD",
         startTime: "yyyy-MM-ddThh:mm",
@@ -48,7 +48,7 @@ export default function CreateAuction({productId, userId, setOngoingAuction}) {
                 data
             ).then(response => {
                 setIsLoading(false);
-                setOngoingAuction(response.data);
+                setActiveAuction(response.data);
                 setRequestState({reqSent: true, isError: false, resMessage: "Auction successfully created" });
                 setAuction({
                     type: "STANDARD",
