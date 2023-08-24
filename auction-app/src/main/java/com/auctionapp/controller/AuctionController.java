@@ -8,10 +8,12 @@ import com.auctionapp.service.ProductService;
 import com.auctionapp.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/auction")
 public class AuctionController {
@@ -29,8 +31,9 @@ public class AuctionController {
     }
 
     @GetMapping("/")
-    public ResponseEntity<List<AuctionDTO>> getAllAuctions() {
-        List<AuctionDTO> auctions = auctionService.getAllAuctions();
+    @PreAuthorize("hasRole('USER')")
+    public ResponseEntity<List<Auction>> getAllAuctions() {
+        List<Auction> auctions = auctionService.getAllAuctions();
         return ResponseEntity.ok(auctions);
     }
 
@@ -41,6 +44,7 @@ public class AuctionController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<AuctionDTO> getAuctionById(@PathVariable Long id) {
         AuctionDTO auction = auctionService.getAuctionById(id);
         if (auction == null) {
@@ -50,6 +54,7 @@ public class AuctionController {
     }
 
     @PostMapping("/")
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<String> createAuction(@RequestBody Auction auction) {
         if (auction.getId() != null && auction.getId() != 0) {
             return ResponseEntity.badRequest().build();
@@ -66,6 +71,7 @@ public class AuctionController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<String> updateAuction(@PathVariable Long id, @RequestBody AuctionDTO auctionDTO) {
         AuctionDTO auction = auctionService.getAuctionById(id);
         if (auction == null) {
@@ -76,6 +82,7 @@ public class AuctionController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<String> deleteAuction(@PathVariable Long id) {
         if (id != null && auctionService.getAuctionById(id) != null) {
             auctionService.deleteAuction(id);

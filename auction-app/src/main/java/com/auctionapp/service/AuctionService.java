@@ -5,7 +5,6 @@ import com.auctionapp.model.auction.AuctionDTO;
 import com.auctionapp.repository.AuctionRepository;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -15,19 +14,16 @@ public class AuctionService {
 
     private final AuctionRepository auctionRepository;
 
-    public AuctionService (AuctionRepository auctionRepository)
-    {
+    public AuctionService(AuctionRepository auctionRepository) {
         this.auctionRepository = auctionRepository;
     }
 
-    public Auction createAuction (Auction auction)
-    {
+    public Auction createAuction(Auction auction) {
         return auctionRepository.save(auction);
     }
 
-    public List<AuctionDTO> getAllAuctions()
-    {
-        return convertToDTOList(auctionRepository.findAll());
+    public List<Auction> getAllAuctions() {
+        return auctionRepository.findAll();
     }
 
     public List<AuctionDTO> getAuctionsByProductId(Long productId)
@@ -51,8 +47,7 @@ public class AuctionService {
         return auctionDTO;
     }
 
-    public void updateAuction (Long id, AuctionDTO auctionWithUpdates)
-    {
+    public void updateAuction(Long id, AuctionDTO auctionWithUpdates) {
         Optional<Auction> oAuction = auctionRepository.findById(id);
         if (oAuction.isPresent()) {
             Auction auction = oAuction.get();
@@ -64,8 +59,7 @@ public class AuctionService {
         }
     }
 
-    public void deleteAuction (Long id)
-    {
+    public void deleteAuction(Long id) {
         auctionRepository.deleteById(id);
     }
 
