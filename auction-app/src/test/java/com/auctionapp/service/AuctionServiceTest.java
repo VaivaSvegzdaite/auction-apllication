@@ -37,7 +37,7 @@ public class AuctionServiceTest {
         List<Auction> auctionList = new ArrayList<>();
         when(auctionRepository.findAll()).thenReturn(auctionList);
 
-        List<AuctionDTO> result = auctionService.getAllAuctions();
+        List<Auction> result = auctionService.getAllAuctions();
         assertEquals(auctionList, result);
     }
 

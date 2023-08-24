@@ -1,41 +1,55 @@
-import { Component } from "react";
+import AuctionsListComponent from "./AuctionsList.component.jsx";
+import SearchComponent from "./Search.Component.jsx";
+import {useEffect, useState} from "react";
+import AuctionService from "../../services/auction.service.jsx";
 
-import UserService from "../../services/user.service";
+export default function HomeComponent() {
+    const [searchQuery, setSearchQuery] = useState('');
+    const [auctions, setAuctions] = useState([]);
+    const [originalAuctions, setOriginalAuctions] = useState([]);
 
-export default class Home extends Component {
-    constructor(props) {
-        super(props);
+    useEffect(() => {
+       AuctionService.getAllAuctions()
+            .then(response => {
+                const auctionsWithProduct = response.data.map(auction => ({
+                    ...auction,
+                    product: {
+                        name: auction.product.name,
+                        url: auction.product.url,
+                        description: auction.product.description
+                    }
+                }));
+                setAuctions(auctionsWithProduct);
+                setOriginalAuctions(auctionsWithProduct)
+            })
+            .catch(error => {
+                console.error('Error fetching auction data:', error);
+            });
+    }, []);
 
-        this.state = {
-            content: ""
-        };
-    }
+    const handleSearch = (query) => {
+        setSearchQuery(query);
+    };
 
-    componentDidMount() {
-        UserService.getPublicContent().then(
-            response => {
-                this.setState({
-                    content: response.data
-                });
-            },
-            error => {
-                this.setState({
-                    content:
-                        (error.response && error.response.data) ||
-                        error.message ||
-                        error.toString()
-                });
-            }
-        );
-    }
+    useEffect(() => {
+        if (searchQuery === '') {
+            setAuctions(originalAuctions);
+        } else {
+            const filteredAuctions = originalAuctions.filter(auction =>
+                auction.product.name.toLowerCase().includes(searchQuery.toLowerCase())
+            );
+            setAuctions(filteredAuctions);
+        }
+    }, [searchQuery, originalAuctions]);
 
-    render() {
-        return (
-            <div className="container" >
-                <header className="jumbotron">
-                    <h3>{this.state.content}</h3>
-                </header>
+    return (
+        <div className="container">
+            <div className="row">
+                <div className="col-md-6 mt-5">
+                    <SearchComponent onSearch={handleSearch}/>
+                </div>
             </div>
-        );
-    }
+            <AuctionsListComponent auctions={auctions} />
+        </div>
+    );
 }

@@ -57,8 +57,14 @@ class Login extends Component {
         if (this.checkBtn.context._errors.length === 0) {
             AuthService.login(this.state.username, this.state.password).then(
                 () => {
-                    this.props.router.navigate("/admin");
-                    window.location.reload();
+                    if (this.state.username === "admin") {
+                        this.props.router.navigate("/admin");
+                        window.location.reload();
+                    } else {
+                        this.props.router.navigate("/auctions");
+                        window.location.reload();
+                    }
+
                 },
                 error => {
                     const resMessage =
