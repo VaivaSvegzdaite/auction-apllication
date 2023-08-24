@@ -1,7 +1,5 @@
 package com.auctionapp.model.product;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.ManyToOne;
 import lombok.Getter;
 import lombok.Setter;
 
