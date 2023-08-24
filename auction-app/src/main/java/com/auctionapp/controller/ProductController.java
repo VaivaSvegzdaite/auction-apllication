@@ -42,15 +42,19 @@ public class ProductController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-   @GetMapping("/search/{name}")
+   @GetMapping("/search/byName/{name}")
     public ResponseEntity<List<ProductDTO>> getProductByName(@PathVariable String name) {
         List<ProductDTO> listOfProductNameResponse =  productService.getProductByName(name);
         return ResponseEntity.ok(listOfProductNameResponse);
     }
 
-    @GetMapping("search/{category}")
-    public ResponseEntity<List<ProductDTO>> getProductByCategory(EProductCategory category) {
+    @GetMapping("search/byCategory/{category}")
+    public ResponseEntity<List<ProductDTO>> getProductByCategory(@PathVariable EProductCategory category) {
         List<ProductDTO> listOfProductCategoryResponse = productService.getProductByCategory(category);
+
+        if (listOfProductCategoryResponse.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
         return ResponseEntity.ok(listOfProductCategoryResponse);
     }
 
