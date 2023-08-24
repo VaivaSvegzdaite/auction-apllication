@@ -82,11 +82,12 @@ export default function AddProduct({currentUser, setProducts}) {
                         className="form-control"
                         name="name"
                         value={product.name}
+                        maxLength={50}
                         onChange={(e) => {
                             setProduct(prev => ({... prev, name: e.target.value}))
                             const isOnlyCharSpace = /^(?!.*\s{2,})(?!^ )[A-Za-z\s]{1,18}$/.test( e.target.value);
                             const isCorrectLength =  e.target.value.length >= 3 &&  e.target.value.length <=50;           
-                            if (!isOnlyCharSpace || !isCorrectLength){
+                            if (!isOnlyCharSpace ){
                                 setIsNameError(true);
                             } else { 
                                 setIsNameError(false);
