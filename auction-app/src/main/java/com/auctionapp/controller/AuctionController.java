@@ -4,6 +4,7 @@ import com.auctionapp.model.auction.Auction;
 import com.auctionapp.model.auction.AuctionDTO;
 import com.auctionapp.service.AuctionService;
 import com.auctionapp.service.BidService;
+import com.auctionapp.service.ProductService;
 import com.auctionapp.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,16 +18,25 @@ public class AuctionController {
     public final AuctionService auctionService;
     public final UserService userService;
     public final BidService bidService;
+    public final ProductService productService;
 
-    public AuctionController(AuctionService auctionService, UserService userService, BidService bidService) {
+    public AuctionController(AuctionService auctionService, UserService userService, BidService bidService,
+                             ProductService productService) {
         this.auctionService = auctionService;
         this.userService = userService;
         this.bidService = bidService;
+        this.productService = productService;
     }
 
     @GetMapping("/")
     public ResponseEntity<List<AuctionDTO>> getAllAuctions() {
         List<AuctionDTO> auctions = auctionService.getAllAuctions();
+        return ResponseEntity.ok(auctions);
+    }
+
+    @GetMapping("/product/{productId}")
+    public ResponseEntity<List<AuctionDTO>> getAuctionsByProductId(@PathVariable Long productId) {
+        List<AuctionDTO> auctions = auctionService.getAuctionsByProductId(productId);
         return ResponseEntity.ok(auctions);
     }
 
@@ -47,6 +57,9 @@ public class AuctionController {
         Long userId = auction.getUser().getId();
         if (userService.getUserById(userId).isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User for adding auction doesn't exist");
+        }
+        if (productService.getProductById(auction.getProduct().getId()).isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product for adding auction doesn't exist");
         }
         auctionService.createAuction(auction);
         return ResponseEntity.ok("Auction created successfully!");
