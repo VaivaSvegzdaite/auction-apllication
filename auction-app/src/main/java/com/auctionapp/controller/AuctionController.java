@@ -55,7 +55,7 @@ public class AuctionController {
 
     @PostMapping("/")
     @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<String> createAuction(@RequestBody Auction auction) {
+    public ResponseEntity<?> createAuction(@RequestBody Auction auction) {
         if (auction.getId() != null && auction.getId() != 0) {
             return ResponseEntity.badRequest().build();
         }
@@ -73,7 +73,7 @@ public class AuctionController {
 
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<String> updateAuction(@PathVariable Long id, @RequestBody AuctionDTO auctionDTO) {
+    public ResponseEntity<?> updateAuction(@PathVariable Long id, @RequestBody AuctionDTO auctionDTO) {
         AuctionDTO auction = auctionService.getAuctionById(id);
         if (auction == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Auction doesn't exist");
