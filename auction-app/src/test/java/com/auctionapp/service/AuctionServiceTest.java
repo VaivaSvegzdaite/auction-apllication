@@ -42,6 +42,16 @@ public class AuctionServiceTest {
     }
 
     @Test
+    @DisplayName("Test for getting all auctions request behavior")
+    public void testGetAuctionsByProductId() {
+        List<Auction> auctionList = new ArrayList<>();
+        when(auctionRepository.findAll()).thenReturn(auctionList);
+
+        //List<AuctionDTO> result = auctionService.getAuctionsByProductId();
+        //assertEquals(auctionList, result);
+    }
+
+    @Test
     @DisplayName("Test for creating auction request behavior")
     public void testCreateAuction() {
         Auction auction = new Auction();
