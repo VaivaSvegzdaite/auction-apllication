@@ -53,12 +53,6 @@ class App extends Component {
                         AuctionApp
                     </Link>
                     <div className="navbar-nav mr-auto">
-                        <li className="nav-item">
-                            <Link to={"/home"} className="nav-link">
-                                Home
-                            </Link>
-                        </li>
-
                         {showAdminBoard && (
                             <li className="nav-item">
                                 <Link to={"/admin"} className="nav-link">
@@ -69,8 +63,8 @@ class App extends Component {
 
                         {!showAdminBoard && currentUser && (
                             <li className="nav-item">
-                                <Link to={"/user"} className="nav-link">
-                                    User
+                                <Link to={"/auctions"} className="nav-link">
+                                    All Auctions
                                 </Link>
                             </li>
                         )}
@@ -108,12 +102,11 @@ class App extends Component {
 
                 <div className="min-vh-100 bg-warning">
                     <Routes>
-                        <Route path="/" element={<Home />} />
-                        <Route path="/home" element={<Home />} />
+                        <Route path="/" element={<Signup />} />
                         <Route path="/login" element={<Login />} />
                         <Route path="/signup" element={<Signup />} />
                         <Route path="/profile" element={<Profile />} />
-                        <Route path="/user" element={<BoardUser />} />
+                        <Route path="/auctions" element={<BoardUser />} />
                         <Route path="/admin" element={<BoardAdmin />} />
                     </Routes>
                 </div>

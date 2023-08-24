@@ -26,7 +26,19 @@ public class AuctionService {
         return auctionRepository.findAll();
     }
 
-    public AuctionDTO getAuctionById(Long id) {
+    public List<AuctionDTO> getAuctionsByProductId(Long productId)
+    {
+        List<AuctionDTO> allAuctions = convertToDTOList(auctionRepository.findAll());
+        List<AuctionDTO> auctions = new ArrayList<>();
+        for (AuctionDTO auction: allAuctions) {
+            if (auction.getProductId() == productId)
+                auctions.add(auction);
+        }
+        return auctions;
+    }
+
+    public AuctionDTO getAuctionById (Long id)
+    {
         Optional<Auction> auction = auctionRepository.findById(id);
         AuctionDTO auctionDTO = null;
         if (auction.isPresent()) {
