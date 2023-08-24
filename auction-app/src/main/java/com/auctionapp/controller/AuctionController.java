@@ -2,6 +2,7 @@ package com.auctionapp.controller;
 
 import com.auctionapp.model.auction.Auction;
 import com.auctionapp.model.auction.AuctionDTO;
+import com.auctionapp.model.product.Product;
 import com.auctionapp.service.AuctionService;
 import com.auctionapp.service.BidService;
 import com.auctionapp.service.ProductService;
@@ -11,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/auction")
@@ -35,9 +37,13 @@ public class AuctionController {
     }
 
     @GetMapping("/product/{productId}")
-    public ResponseEntity<List<AuctionDTO>> getAuctionsByProductId(@PathVariable Long productId) {
-        List<AuctionDTO> auctions = auctionService.getAuctionsByProductId(productId);
-        return ResponseEntity.ok(auctions);
+    public ResponseEntity<AuctionDTO> getAuctionByProductId(@PathVariable Long productId) {
+        Optional<Product> result = productService.getProductById(productId);
+        AuctionDTO auction = auctionService.getAuctionByProductId(productId);
+        if (auction == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(auction);
     }
 
     @GetMapping("/{id}")
