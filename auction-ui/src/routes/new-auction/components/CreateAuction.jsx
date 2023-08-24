@@ -2,14 +2,13 @@ import { useState } from "react";
 import Form from "react-validation/build/form";
 import Input from "react-validation/build/input";
 import axios from "axios";
-import {format} from "date-fns";
 
 const auctionTypes = [
     "STANDARD",
     "RESERVE"
 ]
 
-export default function CreateAuction({productId, userId}) {
+export default function CreateAuction({productId, userId, setOngoingAuction}) {
     const [ auction, setAuction ] = useState(() => ({
         type: "STANDARD",
         startTime: "yyyy-MM-ddThh:mm",
@@ -48,8 +47,8 @@ export default function CreateAuction({productId, userId}) {
             'http://localhost:8080/api/auction/', 
                 data
             ).then(response => {
-                response.json();
                 setIsLoading(false);
+                setOngoingAuction(response.data);
                 setRequestState({reqSent: true, isError: false, resMessage: "Auction successfully created" });
                 setAuction({
                     type: "STANDARD",
@@ -61,7 +60,7 @@ export default function CreateAuction({productId, userId}) {
                 })
             })
             .catch(err => {
-                console.log(err.response);
+                console.log(err);
                 setIsLoading(false);
                 setRequestState({reqSent: true, isError: true, resMessage: "Network error, try again later"});
             }) 

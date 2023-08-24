@@ -41,7 +41,7 @@ public class AuctionController {
     }
 
     @PostMapping("/")
-    public ResponseEntity<String> createAuction(@RequestBody Auction auction) {
+    public ResponseEntity<?> createAuction(@RequestBody Auction auction) {
         if (auction.getId() != null && auction.getId() != 0) {
             return ResponseEntity.badRequest().build();
         }
@@ -49,8 +49,9 @@ public class AuctionController {
         if (userService.getUserById(userId).isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User for adding auction doesn't exist");
         }
-        auctionService.createAuction(auction);
-        return ResponseEntity.ok("Auction created successfully!");
+        Auction newAuction = auctionService.createAuction(auction);
+        AuctionDTO createdAuctionDTO = auctionService.getAuctionById(auction.getId());
+        return ResponseEntity.ok(createdAuctionDTO);
     }
 
     @PutMapping("/{id}")
