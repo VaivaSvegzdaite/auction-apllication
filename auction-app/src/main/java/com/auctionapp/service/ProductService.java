@@ -51,7 +51,6 @@ public class ProductService {
         if (products.isEmpty()) {
             products = productRepository.findByAllNames(name);
         }
-
         if (products.isEmpty()) {
             throw new RuntimeException("No products found with name: " + name);
         }
