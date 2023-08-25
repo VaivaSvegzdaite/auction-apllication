@@ -6,6 +6,7 @@ import com.auctionapp.model.bid.Bid;
 import com.auctionapp.model.bid.BidDTO;
 import com.auctionapp.model.product.Product;
 import com.auctionapp.repository.AuctionRepository;
+import com.auctionapp.repository.ProductRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -18,8 +19,14 @@ public class AuctionService {
     private final AuctionRepository auctionRepository;
     private ProductService productService;
 
+<<<<<<< HEAD
     public AuctionService(AuctionRepository auctionRepository) {
+=======
+    public AuctionService (AuctionRepository auctionRepository, ProductService productService)
+    {
+>>>>>>> bff75af (changed GetAuction method so that there can be only one auction per product)
         this.auctionRepository = auctionRepository;
+        this.productService = productService;
     }
 
     public Auction createAuction(Auction auction) {
@@ -32,15 +39,14 @@ public class AuctionService {
 
     public AuctionDTO getAuctionByProductId(Long productId)
     {
+        AuctionDTO answer = null;
         Optional<Product> result = productService.getProductById(productId);
-        List<BidDTO> listOfBidDTOs = null;
         if (result.isPresent()) {
-            List<Bid> bids = bidRepository.findByProduct(result.get());
-            listOfBidDTOs = convertToDTOList(bids);
-        } else {
-            throw new RuntimeException("Did not find product with id " + productId);
+            Optional<Auction> auction = Optional.ofNullable(auctionRepository.findByProduct(result.get()));
+            if (auction.isPresent())
+                answer = convertToDTO(auction.get());
         }
-        return listOfBidDTOs;
+        return answer;
     }
 
     public AuctionDTO getAuctionById (Long id)
