@@ -19,12 +19,8 @@ public class AuctionService {
     private final AuctionRepository auctionRepository;
     private ProductService productService;
 
-<<<<<<< HEAD
-    public AuctionService(AuctionRepository auctionRepository) {
-=======
     public AuctionService (AuctionRepository auctionRepository, ProductService productService)
     {
->>>>>>> bff75af (changed GetAuction method so that there can be only one auction per product)
         this.auctionRepository = auctionRepository;
         this.productService = productService;
     }
