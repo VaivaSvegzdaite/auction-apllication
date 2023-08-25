@@ -3,6 +3,7 @@ package com.auctionapp.model.bid;
 import com.auctionapp.model.product.Product;
 import com.auctionapp.model.user.User;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -20,6 +21,7 @@ public class Bid {
     private Long id;
 
     @Column(name = "price")
+    @Min(value = 1, message = "Bid should not be less than 1 EUR")
     private double price;
 
     @ManyToOne

@@ -1,6 +1,5 @@
 package com.auctionapp.controller;
 
-
 import com.auctionapp.model.bid.Bid;
 import com.auctionapp.model.bid.BidDTO;
 import com.auctionapp.model.bid.BidPriceDTO;
@@ -11,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @CrossOrigin(origins = "*", maxAge = 36000)
