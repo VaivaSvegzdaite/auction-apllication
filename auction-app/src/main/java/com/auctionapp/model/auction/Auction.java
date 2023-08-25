@@ -40,7 +40,7 @@ public class Auction {
     @Min(value = 1, message = "Price should not be less than 1 EUR")
     private double startingPrice;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name="product_id", referencedColumnName = "id")
     private Product product;
 

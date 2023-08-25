@@ -2,6 +2,9 @@ package com.auctionapp.service;
 
 import com.auctionapp.model.auction.Auction;
 import com.auctionapp.model.auction.AuctionDTO;
+import com.auctionapp.model.bid.Bid;
+import com.auctionapp.model.bid.BidDTO;
+import com.auctionapp.model.product.Product;
 import com.auctionapp.repository.AuctionRepository;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +16,7 @@ import java.util.Optional;
 public class AuctionService {
 
     private final AuctionRepository auctionRepository;
+    private ProductService productService;
 
     public AuctionService(AuctionRepository auctionRepository) {
         this.auctionRepository = auctionRepository;
@@ -26,15 +30,17 @@ public class AuctionService {
         return auctionRepository.findAll();
     }
 
-    public List<AuctionDTO> getAuctionsByProductId(Long productId)
+    public AuctionDTO getAuctionByProductId(Long productId)
     {
-        List<AuctionDTO> allAuctions = convertToDTOList(auctionRepository.findAll());
-        List<AuctionDTO> auctions = new ArrayList<>();
-        for (AuctionDTO auction: allAuctions) {
-            if (auction.getProductId() == productId)
-                auctions.add(auction);
+        Optional<Product> result = productService.getProductById(productId);
+        List<BidDTO> listOfBidDTOs = null;
+        if (result.isPresent()) {
+            List<Bid> bids = bidRepository.findByProduct(result.get());
+            listOfBidDTOs = convertToDTOList(bids);
+        } else {
+            throw new RuntimeException("Did not find product with id " + productId);
         }
-        return auctions;
+        return listOfBidDTOs;
     }
 
     public AuctionDTO getAuctionById (Long id)
