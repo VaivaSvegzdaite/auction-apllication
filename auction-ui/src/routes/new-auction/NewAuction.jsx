@@ -3,8 +3,8 @@ import axios from "axios";
 import {useParams} from "react-router-dom";
 import CreateAuction from "./components/CreateAuction";
 import {format} from "date-fns";
-import { Link } from "react-router-dom";
 import authHeader from "../../services/auth.header";
+import { Link } from "react-router-dom";
 
 export default function NewAuction({currentUser}) {
     const {productId} = useParams();
@@ -19,8 +19,9 @@ export default function NewAuction({currentUser}) {
 
     useEffect(() => {
         axios.get(
-            `http://localhost:8080/api/product/${productId}`
-            ).then(response => {
+            `http://localhost:8080/api/product/${productId}`, {
+                headers: authHeader()
+            }).then(response => {
                 setProduct(response.data)
             })
             .catch(err => {
@@ -31,7 +32,6 @@ export default function NewAuction({currentUser}) {
             `http://localhost:8080/api/auction/product/${productId}`, {
                 headers: authHeader()
             }).then(response => {
-                console.log(response.data)
                 setActiveAuction(response.data)
             })
             .catch(err => {

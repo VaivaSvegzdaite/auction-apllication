@@ -72,6 +72,9 @@ public class AuctionController {
         if (productService.getProductById(auction.getProduct().getId()).isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product for adding auction doesn't exist");
         }
+        if (auctionService.getAuctionByProductId(auction.getProduct().getId()) != null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("This product already has an auction.");
+        }
         Auction newAuction = auctionService.createAuction(auction);
         AuctionDTO createdAuctionDTO = auctionService.getAuctionById(auction.getId());
         return ResponseEntity.ok(createdAuctionDTO);
