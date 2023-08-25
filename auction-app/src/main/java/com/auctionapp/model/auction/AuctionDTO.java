@@ -3,7 +3,7 @@ package com.auctionapp.model.auction;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -11,8 +11,8 @@ import java.util.List;
 public class AuctionDTO {
     private Long id;
     private EAuctionType type;
-    private Date startTime;
-    private Date endTime;
+    private LocalDateTime startTime;
+    private LocalDateTime endTime;
     private double startingPrice;
     private Long productId;
     private Long userId;

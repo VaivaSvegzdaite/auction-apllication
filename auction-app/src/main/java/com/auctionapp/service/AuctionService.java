@@ -3,8 +3,6 @@ package com.auctionapp.service;
 import com.auctionapp.model.auction.Auction;
 import com.auctionapp.model.auction.AuctionDTO;
 import com.auctionapp.repository.AuctionRepository;
-import com.auctionapp.repository.BidRepository;
-import com.auctionapp.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -15,24 +13,28 @@ import java.util.Optional;
 public class AuctionService {
 
     private final AuctionRepository auctionRepository;
-    private final UserRepository userRepository;
-    private final BidRepository bidRepository;
 
-    public AuctionService (AuctionRepository auctionRepository, UserRepository userRepository, BidRepository bidRepository)
-    {
+    public AuctionService(AuctionRepository auctionRepository) {
         this.auctionRepository = auctionRepository;
-        this.userRepository = userRepository;
-        this.bidRepository = bidRepository;
     }
 
-    public Auction createAuction (Auction auction)
-    {
+    public Auction createAuction(Auction auction) {
         return auctionRepository.save(auction);
     }
 
-    public List<AuctionDTO> getAllAuctions()
+    public List<Auction> getAllAuctions() {
+        return auctionRepository.findAll();
+    }
+
+    public List<AuctionDTO> getAuctionsByProductId(Long productId)
     {
-        return convertToDTOList(auctionRepository.findAll());
+        List<AuctionDTO> allAuctions = convertToDTOList(auctionRepository.findAll());
+        List<AuctionDTO> auctions = new ArrayList<>();
+        for (AuctionDTO auction: allAuctions) {
+            if (auction.getProductId() == productId)
+                auctions.add(auction);
+        }
+        return auctions;
     }
 
     public AuctionDTO getAuctionById (Long id)
@@ -45,8 +47,7 @@ public class AuctionService {
         return auctionDTO;
     }
 
-    public void updateAuction (Long id, AuctionDTO auctionWithUpdates)
-    {
+    public void updateAuction(Long id, AuctionDTO auctionWithUpdates) {
         Optional<Auction> oAuction = auctionRepository.findById(id);
         if (oAuction.isPresent()) {
             Auction auction = oAuction.get();
@@ -58,8 +59,7 @@ public class AuctionService {
         }
     }
 
-    public void deleteAuction (Long id)
-    {
+    public void deleteAuction(Long id) {
         auctionRepository.deleteById(id);
     }
 

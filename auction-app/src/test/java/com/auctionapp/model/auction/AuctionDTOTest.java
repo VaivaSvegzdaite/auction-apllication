@@ -7,6 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
@@ -32,25 +33,15 @@ public class AuctionDTOTest {
         auctionDTO.setBidId(list);
         assertEquals(list, auctionDTO.getBidId());
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        try {
-            auctionDTO.setStartTime(dateFormat.parse("2023-08-15"));
-        }
-        catch (ParseException e)
-        {
-            e.printStackTrace();
-        }
-        String actual = dateFormat.format(auctionDTO.getStartTime());
-        assertEquals("2023-08-15", actual);
+        LocalDateTime expectedStartTime = LocalDateTime.of(2023, 8, 23, 23, 0, 0);
+        auctionDTO.setStartTime(expectedStartTime);
+        LocalDateTime actualStartTime = auctionDTO.getStartTime();
+        assertEquals(expectedStartTime, actualStartTime);
 
-        try {
-            auctionDTO.setEndTime(dateFormat.parse("2023-09-15"));
-        }
-        catch (ParseException e)
-        {
-            e.printStackTrace();
-        }
-        assertEquals("2023-09-15", dateFormat.format(auctionDTO.getEndTime()));
+        LocalDateTime expectedEndTime = LocalDateTime.of(2023, 8, 24, 15, 30, 0);
+        auctionDTO.setEndTime(expectedEndTime);
+        LocalDateTime actualEndTime = auctionDTO.getEndTime();
+        assertEquals(expectedEndTime, actualEndTime);
 
         auctionDTO.setStartingPrice(15);
         assertEquals(15, auctionDTO.getStartingPrice());

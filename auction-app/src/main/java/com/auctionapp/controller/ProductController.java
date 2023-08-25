@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/product")
 public class ProductController {
@@ -39,6 +40,12 @@ public class ProductController {
         Optional<Product> oProduct = productService.getProductById(id);
         return oProduct.map(product -> ResponseEntity.ok(productService.convertToDTO(product)))
                 .orElse(ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<List<ProductDTO>> getProductsByUserId(@PathVariable Long userId) {
+        List<ProductDTO> products = productService.getProductsByUserId(userId);
+        return ResponseEntity.ok(products);
     }
 
     @PostMapping("/")

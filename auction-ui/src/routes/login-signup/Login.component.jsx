@@ -3,9 +3,9 @@ import Form from "react-validation/build/form";
 import Input from "react-validation/build/input";
 import CheckButton from "react-validation/build/button";
 
-import AuthService from "../services/auth.service";
+import AuthService from "../../services/auth.service";
 
-import {withRouter} from '../common/with-router';
+import {withRouter} from './components/with-router';
 
 const required = value => {
     if (!value) {
@@ -57,8 +57,14 @@ class Login extends Component {
         if (this.checkBtn.context._errors.length === 0) {
             AuthService.login(this.state.username, this.state.password).then(
                 () => {
-                    this.props.router.navigate("/profile");
-                    window.location.reload();
+                    if (this.state.username === "admin") {
+                        this.props.router.navigate("/admin");
+                        window.location.reload();
+                    } else {
+                        this.props.router.navigate("/auctions");
+                        window.location.reload();
+                    }
+
                 },
                 error => {
                     const resMessage =

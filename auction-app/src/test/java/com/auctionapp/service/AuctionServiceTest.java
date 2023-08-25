@@ -23,14 +23,12 @@ public class AuctionServiceTest {
 
     @Mock
     private AuctionRepository auctionRepository;
-    private UserRepository userRepository;
-    private BidRepository bidRepository;
     private AuctionService auctionService;
 
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.openMocks(this); // Initialize mocks
-        auctionService = new AuctionService(auctionRepository, userRepository, bidRepository);
+        auctionService = new AuctionService(auctionRepository);
     }
 
     @Test
@@ -39,7 +37,7 @@ public class AuctionServiceTest {
         List<Auction> auctionList = new ArrayList<>();
         when(auctionRepository.findAll()).thenReturn(auctionList);
 
-        List<AuctionDTO> result = auctionService.getAllAuctions();
+        List<Auction> result = auctionService.getAllAuctions();
         assertEquals(auctionList, result);
     }
 
