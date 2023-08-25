@@ -38,6 +38,7 @@ public class AuctionController {
     }
 
     @GetMapping("/product/{productId}")
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<List<AuctionDTO>> getAuctionsByProductId(@PathVariable Long productId) {
         List<AuctionDTO> auctions = auctionService.getAuctionsByProductId(productId);
         return ResponseEntity.ok(auctions);
