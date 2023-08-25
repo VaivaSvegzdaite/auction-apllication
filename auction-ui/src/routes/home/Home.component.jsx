@@ -44,8 +44,8 @@ export default function HomeComponent() {
 
     return (
         <div className="container">
-            <div className="row">
-                <div className="col-md-6 mt-5">
+            <div className="row justify-content-center">
+                <div className="col-md-6 mt-4 mb-4">
                     <SearchComponent onSearch={handleSearch}/>
                 </div>
             </div>

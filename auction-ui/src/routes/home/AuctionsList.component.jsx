@@ -6,13 +6,13 @@ const AuctionList = ({auctions}) => {
 
     return (
         <Container>
-            <Row>
-                {auctions.map((auction) => (
-                    <Col key={auction.id} md={4} className="mb-4">
+            <div className="row justify-content-center">
+                <div className="col-10">
+                    {auctions.map((auction) => (
                         <AuctionCard auction={auction} />
-                    </Col>
-                ))}
-            </Row>
+                    ))}
+                </div>
+            </div>
         </Container>
     );
 };
