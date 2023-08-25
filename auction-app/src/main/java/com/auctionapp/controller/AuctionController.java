@@ -38,7 +38,6 @@ public class AuctionController {
 
     @GetMapping("/product/{productId}")
     public ResponseEntity<AuctionDTO> getAuctionByProductId(@PathVariable Long productId) {
-        Optional<Product> result = productService.getProductById(productId);
         AuctionDTO auction = auctionService.getAuctionByProductId(productId);
         if (auction == null) {
             return ResponseEntity.notFound().build();

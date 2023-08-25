@@ -24,11 +24,12 @@ public class AuctionServiceTest {
     @Mock
     private AuctionRepository auctionRepository;
     private AuctionService auctionService;
+    private ProductService productService;
 
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.openMocks(this); // Initialize mocks
-        auctionService = new AuctionService(auctionRepository);
+        auctionService = new AuctionService(auctionRepository, productService);
     }
 
     @Test
