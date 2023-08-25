@@ -30,7 +30,7 @@ class BidControllerTest {
         }
 
         @Test
-        @DisplayName("Checks if correctly returns a response with an HTTP status of OK and a body containing the list of BidDTO objects")
+        @DisplayName("Checks if correctly returns a response and a body containing the list of BidDTO objects")
         public void getAllBids_ReturnsListOfBids() {
             List<BidDTO> bidList = Collections.singletonList(new BidDTO());
 
@@ -44,6 +44,7 @@ class BidControllerTest {
         }
 
         @Test
+        @DisplayName("Checks if method is called with a product ID, correctly returns a response and a body contains the list of BidDTO objects for that product")
         public void getBidsByProduct_ReturnsListOfBids() {
             long productId = 1L;
             List<BidDTO> bidList = Collections.singletonList(new BidDTO());
@@ -57,6 +58,7 @@ class BidControllerTest {
         }
 
         @Test
+        @DisplayName("Checks the response and if body containing the BidDTO object with the corresponding bid ID")
         public void getBidById_ExistingBid_ReturnsBid() {
             long bidId = 1L;
             BidDTO bid = new BidDTO();
@@ -71,6 +73,7 @@ class BidControllerTest {
         }
 
         @Test
+        @DisplayName("Checks if method called with a bid ID that does not exist, it correctly returns a response and a null body, indicating that the bid was not found")
         public void getBidById_NonexistentBid_ReturnsNotFound() {
             long bidId = 1L;
 
