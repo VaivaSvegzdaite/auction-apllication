@@ -1,11 +1,7 @@
 package com.auctionapp.service;
 
 import com.auctionapp.model.auction.Auction;
-import com.auctionapp.model.auction.AuctionDTO;
-import com.auctionapp.model.product.Product;
 import com.auctionapp.repository.AuctionRepository;
-import com.auctionapp.repository.BidRepository;
-import com.auctionapp.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -14,7 +10,6 @@ import org.mockito.MockitoAnnotations;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;

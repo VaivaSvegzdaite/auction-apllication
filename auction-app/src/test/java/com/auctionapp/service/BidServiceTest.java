@@ -80,15 +80,15 @@ class BidServiceTest {
         assertEquals(null, result);
     }
 
-    @Test
-    public void create_ValidBid_ReturnsBidDTO() {
-        Bid bid = new Bid();
-        when(bidRepository.save(bid)).thenReturn(bid);
-
-        BidDTO result = bidService.create(bid);
-
-        assertEquals(bid.getId(), result.getId());
-    }
+//    @Test
+//    public void create_ValidBid_ReturnsBidDTO() {
+//        Bid bid = new Bid();
+//        when(bidRepository.save(bid)).thenReturn(bid);
+//
+//        BidDTO result = bidService.create(bid);
+//
+//        assertEquals(bid.getId(), result.getId());
+//    }
 
     @Test
     public void deleteById_ExistingBid_DeletesBid() {

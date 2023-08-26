@@ -3,6 +3,7 @@ package com.auctionapp.service;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+import com.auctionapp.model.bid.Bid;
 import com.auctionapp.model.role.ERole;
 import com.auctionapp.model.role.Role;
 import com.auctionapp.model.user.User;
@@ -13,6 +14,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -29,10 +32,12 @@ public class UserServiceTest {
         Long userId = 1L;
         Role role1 = new Role();
         role1.setName(ERole.ROLE_USER);
+        List<Bid> bids = new ArrayList<>();
+        bids.add(new Bid());
 
         Role role2 = new Role();
         role2.setName(ERole.ROLE_ADMIN);
-        user = new User(userId, "john_doe", "john@example.com", "123456", Set.of(role1, role2));
+        user = new User(userId, "john_doe", "john@example.com", "123456", Set.of(role1, role2), bids);
     }
 
     @Test
