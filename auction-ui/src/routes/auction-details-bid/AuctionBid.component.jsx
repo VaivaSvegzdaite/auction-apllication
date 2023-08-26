@@ -22,7 +22,7 @@ const AuctionBid = ({auction}) => {
         event.preventDefault();
 
         if (bidAmount <= auction.startingPrice) {
-            setBiddingError('Bid amount must be greater than the starting price.');
+            setBiddingError('Bid amount must be greater than the last price.');
             return;
         }
 
