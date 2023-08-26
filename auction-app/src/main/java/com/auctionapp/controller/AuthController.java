@@ -14,6 +14,7 @@ import com.auctionapp.repository.RoleRepository;
 import com.auctionapp.repository.UserRepository;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
@@ -37,9 +38,11 @@ import java.util.stream.Collectors;
 
 @CrossOrigin(origins = "*", maxAge = 36000)
 @Tag(name = "AuthController", description = "Controller defines entry authentication points for signup, signin, signout")
+@Slf4j
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
+
     @Autowired
     AuthenticationManager authenticationManager;
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import {Card, ListGroup} from 'react-bootstrap';
-import {format} from "date-fns";
+import {format, isAfter} from "date-fns";
 import { Link } from "react-router-dom";
 
 const AuctionCardComponent = ({ auction }) => {
@@ -10,10 +10,11 @@ const AuctionCardComponent = ({ auction }) => {
 
     const formattedStartTime = format(new Date(startTime), 'EEE, dd MMMM yyyy - HH:mm');
     const formattedEndTime = format(new Date(endTime), 'EEE, dd MMMM yyyy - HH:mm');
-
+    // Check if the auction has ended
+    const hasEnded = isAfter(new Date(), new Date(auction.endTime));
 
     return (
-        <div className="card my-4">
+        <div className={`card my-4  ${hasEnded ? 'ended' : ""}`}>
             <div className="row g-0">
                 <div className="col-md-4">
                     <img src={url} className="card-img" alt=""/>

@@ -4,35 +4,48 @@ import com.auctionapp.model.bid.Bid;
 import com.auctionapp.model.bid.BidDTO;
 import com.auctionapp.model.bid.BidPriceDTO;
 import com.auctionapp.model.product.Product;
+import com.auctionapp.model.user.User;
 import com.auctionapp.repository.BidRepository;
-import com.auctionapp.repository.ProductRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 @Service
 public class BidService {
-    private BidRepository bidRepository;
-    private ProductService productService;
 
-    @Autowired
-    public BidService(BidRepository bidRepository, ProductService productService) {
+    private static final Logger logger = LoggerFactory.getLogger(BidService.class);
+    private final BidRepository bidRepository;
+    private final ProductService productService;
+
+    private final UserService userService;
+
+    private final AuctionService auctionService;
+
+    public BidService(BidRepository bidRepository, ProductService productService, UserService userService, AuctionService auctionService) {
         this.bidRepository = bidRepository;
         this.productService = productService;
+        this.userService = userService;
+        this.auctionService = auctionService;
     }
 
+    @Transactional
     public List<BidDTO> findAll() {
-        List<Bid> bids =  bidRepository.findAll();
+        logger.info("Getting all bids");
+        List<Bid> bids = bidRepository.findAll();
         List<BidDTO> listOfBidDTOs = convertToDTOList(bids);
         return listOfBidDTOs;
     }
 
+    @Transactional
     public List<BidDTO> findByProductId(long productId) {
+        logger.info("Getting bids by product ID: {}", productId);
         Optional<Product> result = productService.getProductById(productId);
         List<BidDTO> listOfBidDTOs = null;
         if (result.isPresent()) {
@@ -44,7 +57,9 @@ public class BidService {
         return listOfBidDTOs;
     }
 
+    @Transactional
     public BidDTO findById(Long id) {
+        logger.info("Getting bid by ID: {}", id);
         Optional<Bid> bid = bidRepository.findById(id);
         BidDTO bidDTO = null;
         if (bid.isPresent()) {
@@ -53,22 +68,35 @@ public class BidService {
         return bidDTO;
     }
 
-    public BidDTO create(Bid bid) {
-        Bid newBid = bidRepository.save(bid);
-        return convertToDTO(newBid);
+    @Transactional
+    public Bid create(BidDTO bidDTO) {
+        logger.info("Creating bid");
+        var oUser = userService.getUserById(bidDTO.getUserId());
+        User user = oUser.orElse(null);
+        var oProduct = productService.getProductById(bidDTO.getProductId());
+        Product product = oProduct.orElse(null);
+        var auctionDTO = auctionService.getAuctionById(bidDTO.getAuctionId());
+        Bid newBid = new Bid(bidDTO.getPrice(), user, product, auctionDTO);
+        return bidRepository.save(newBid);
     }
 
+    @Transactional
     public void update(Long id, BidPriceDTO bidPrice) {
+        logger.info("Updating bid with ID: {}", id);
         Optional<Bid> oBid = bidRepository.findById(id);
         if (oBid.isPresent()) {
             Bid bid = oBid.get();
             bid.setPrice(bidPrice.getPrice());
             bidRepository.save(bid);
+            logger.info("Bid with ID {} updated successfully", id);
         }
     }
 
+    @Transactional
     public void deleteById(Long id) {
+        logger.info("Deleting bid with ID: {}", id);
         bidRepository.deleteById(id);
+        logger.info("Bid with ID {} deleted successfully", id);
     }
 
 

@@ -2,15 +2,19 @@ import { useState, useEffect } from "react";
 import ProductCard from "./components/ProductCard";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import authHeader from "../../services/auth.header.jsx";
 
 export default function MyProducts({currentUser}) {
+    console.log(currentUser)
     const [products, setProducts] = useState();
     const userId = currentUser.id;
+    console.log(userId)
 
     useEffect(() => {
         axios.get(
-            `http://localhost:8080/api/product/user/${userId}`
+            `http://localhost:8080/api/product/user/${userId}`, {headers: authHeader()}
             ).then(response => {
+                console.log(response.data)
                 setProducts(response.data)
             })
             .catch(err => {

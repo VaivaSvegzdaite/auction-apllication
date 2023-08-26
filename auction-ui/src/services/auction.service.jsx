@@ -13,6 +13,10 @@ class AuctionService {
         return axios.get(API_URL + `/` + id,{headers: authHeader()})
     }
 
+    updateAuction(id, body) {
+        return axios.put(API_URL + `/` + id, body, {headers: authHeader()})
+    }
+
 }
 
 export default new AuctionService();

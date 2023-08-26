@@ -3,6 +3,7 @@ package com.auctionapp.model.product;
 import com.auctionapp.model.user.User;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Pattern;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -11,6 +12,7 @@ import jakarta.validation.constraints.Size;
 
 @Entity
 @NoArgsConstructor
+@AllArgsConstructor
 @Setter
 @Getter
 public class Product {
@@ -45,5 +47,12 @@ public class Product {
     @Pattern(regexp = "^(https?|ftp)://[^\\s/$.?#].[^\\s]*$", message = "Invalid URL format")
     private String url;
 
+    public Product(String name, String description, EProductCategory category, User user, String url) {
+        this.name = name;
+        this.description = description;
+        this.category = category;
+        this.user = user;
+        this.url = url;
+    }
 }
 

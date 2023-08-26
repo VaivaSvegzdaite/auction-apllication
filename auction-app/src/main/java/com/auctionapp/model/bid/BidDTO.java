@@ -1,5 +1,8 @@
 package com.auctionapp.model.bid;
 
+import com.auctionapp.model.auction.AuctionDTO;
+import com.auctionapp.model.login.UserDTO;
+import com.auctionapp.model.product.ProductDTO;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,4 +13,5 @@ public class BidDTO {
     private double price;
     private Long userId;
     private Long productId;
+    private Long auctionId;
 }

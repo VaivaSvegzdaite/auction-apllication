@@ -9,18 +9,12 @@ export default function HomeComponent() {
     const [originalAuctions, setOriginalAuctions] = useState([]);
 
     useEffect(() => {
-       AuctionService.getAllAuctions()
+        AuctionService.getAllAuctions()
             .then(response => {
-                const auctionsWithProduct = response.data.map(auction => ({
-                    ...auction,
-                    product: {
-                        name: auction.product.name,
-                        url: auction.product.url,
-                        description: auction.product.description
-                    }
-                }));
-                setAuctions(auctionsWithProduct);
-                setOriginalAuctions(auctionsWithProduct)
+                console.log(response.data)
+                const auctionData = response.data;
+                setAuctions(auctionData);
+                setOriginalAuctions(auctionData);
             })
             .catch(error => {
                 console.error('Error fetching auction data:', error);
