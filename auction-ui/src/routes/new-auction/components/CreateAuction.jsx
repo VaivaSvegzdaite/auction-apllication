@@ -77,7 +77,7 @@ export default function CreateAuction({
         } else if (variant === "UPDATE") {
             axios.put(
                 `http://localhost:8080/api/auction/${activeAuction.id}`, 
-                    data
+                    data, {headers: authHeader()}
                 ).then(response => {
                     setIsLoading(false);
                     setActiveAuction(response.data);

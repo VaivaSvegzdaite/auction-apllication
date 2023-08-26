@@ -2,22 +2,26 @@ package com.auctionapp.service;
 
 import com.auctionapp.model.auction.Auction;
 import com.auctionapp.model.auction.AuctionDTO;
-import com.auctionapp.model.bid.Bid;
-import com.auctionapp.model.bid.BidDTO;
 import com.auctionapp.model.product.Product;
 import com.auctionapp.repository.AuctionRepository;
-import com.auctionapp.repository.ProductRepository;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 @Service
 public class AuctionService {
 
+    private static final Logger logger = LoggerFactory.getLogger(AuctionService.class);
+
     private final AuctionRepository auctionRepository;
-    private ProductService productService;
+    private final ProductService productService;
 
     public AuctionService (AuctionRepository auctionRepository, ProductService productService)
     {
@@ -26,36 +30,39 @@ public class AuctionService {
     }
 
     public Auction createAuction(Auction auction) {
+        logger.info("Creating auction");
         return auctionRepository.save(auction);
     }
 
+    @Transactional
     public List<Auction> getAllAuctions() {
+        logger.info("Getting all auctions");
         return auctionRepository.findAll();
     }
 
-    public AuctionDTO getAuctionByProductId(Long productId)
-    {
+    @Transactional
+    public AuctionDTO getAuctionByProductId(Long productId) {
+        logger.info("Getting auction by product ID: {}", productId);
         AuctionDTO answer = null;
         Optional<Product> result = productService.getProductById(productId);
         if (result.isPresent()) {
             Optional<Auction> auction = Optional.ofNullable(auctionRepository.findByProduct(result.get()));
-            if (auction.isPresent())
+            if (auction.isPresent()) {
                 answer = convertToDTO(auction.get());
+            }
         }
         return answer;
     }
 
-    public AuctionDTO getAuctionById (Long id)
-    {
-        Optional<Auction> auction = auctionRepository.findById(id);
-        AuctionDTO auctionDTO = null;
-        if (auction.isPresent()) {
-            auctionDTO = convertToDTO(auction.get());
-        }
-        return auctionDTO;
+    @Transactional
+    public Auction getAuctionById(Long id) {
+        logger.info("Getting auction by ID: {}", id);
+        return auctionRepository.findById(id).orElse(null);
     }
 
+    @Transactional
     public void updateAuction(Long id, AuctionDTO auctionWithUpdates) {
+        logger.info("Updating auction with ID: {}", id);
         Optional<Auction> oAuction = auctionRepository.findById(id);
         if (oAuction.isPresent()) {
             Auction auction = oAuction.get();
@@ -64,11 +71,15 @@ public class AuctionService {
             auction.setEndTime(auctionWithUpdates.getEndTime());
             auction.setStartingPrice(auctionWithUpdates.getStartingPrice());
             auctionRepository.save(auction);
+            logger.info("Auction with ID {} updated successfully", id);
         }
     }
 
+    @Transactional
     public void deleteAuction(Long id) {
+        logger.info("Deleting auction with ID: {}", id);
         auctionRepository.deleteById(id);
+        logger.info("Auction with ID {} deleted successfully", id);
     }
 
     private AuctionDTO convertToDTO(Auction auction) {

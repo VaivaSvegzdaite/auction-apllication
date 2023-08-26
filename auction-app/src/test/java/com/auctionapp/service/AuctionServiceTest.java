@@ -1,11 +1,9 @@
 package com.auctionapp.service;
 
-import com.auctionapp.controller.AuctionController;
 import com.auctionapp.model.auction.Auction;
 import com.auctionapp.model.auction.AuctionDTO;
 import com.auctionapp.model.auction.EAuctionType;
 import com.auctionapp.model.product.Product;
-import com.auctionapp.model.user.User;
 import com.auctionapp.repository.AuctionRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -15,7 +13,6 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -84,7 +81,7 @@ public class AuctionServiceTest {
 
         when(auctionRepository.findById(auctionId)).thenReturn(Optional.of(auction));
 
-        AuctionDTO result = auctionService.getAuctionById(auctionId);
+        Auction result = auctionService.getAuctionById(auctionId);
         assertNotNull(result);
         assertEquals(auctionId, result.getId());
     }

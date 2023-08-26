@@ -39,3 +39,7 @@ label {
 .visually-hidden {
   display: none;
 }
+
+.auction-card.ended {
+  opacity: 0.7;
+}
