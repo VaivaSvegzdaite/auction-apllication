@@ -8,22 +8,18 @@ export default function AuctionDetailsBid() {
     const [auction, setAuction] = useState(null);
 
     useEffect(() => {
-        AuctionService.getAllAuctions()
+        AuctionService.getAuctionById(auctionId)
             .then(response => {
-                let auctions = response.data
-                setAuction(auctions)
-                const selected = auctions.find(auction => auction.id === Number(auctionId));
-                console.log('Selected auction:', selected);
-                setAuction(selected || null);
+                setAuction(response.data)
             })
             .catch(error => {
-                console.error('Error fetching auction data:', error);
+                console.error('Error fetching auction', error);
             });
-    }, [auctionId]);
+    }, []);
 
     return (
     auction !== null ? (
-        <AuctionDetails auction={auction}/>
+        <AuctionDetails auction={auction} setAuction={setAuction}/>
     ) : (
         <p>Loading or no auction found</p>
     )

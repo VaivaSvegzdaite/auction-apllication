@@ -1,5 +1,6 @@
 package com.auctionapp.controller;
 
+import com.auctionapp.model.bid.Bid;
 import com.auctionapp.model.bid.BidDTO;
 import com.auctionapp.model.bid.BidPriceDTO;
 import com.auctionapp.service.BidService;
@@ -68,20 +69,20 @@ public class BidController {
     @PostMapping("/")
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<?> createBid(@RequestBody BidDTO bidDTO) {
-        // Long userId = bid.getUser().getId();
-        // Long productId = bid.getProduct().getId();
-        // if (userService.getUserById(userId).isEmpty()) {
-        //     logger.warn("User for bidding doesn't exist.");
-        //     return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User for bidding doesn't exist");
-        // }
-        // if (productService.getProductById(productId).isEmpty()) {
-        //     logger.warn("Product for bidding doesn't exist.");
-        //     return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product for bidding doesn't exist");
-        // }
+         Long userId = bidDTO.getUserId();
+         Long productId = bidDTO.getProductId();
+         if (userService.getUserById(userId).isEmpty()) {
+             logger.warn("User for bidding doesn't exist.");
+             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User for bidding doesn't exist");
+         }
+         if (productService.getProductById(productId).isEmpty()) {
+             logger.warn("Product for bidding doesn't exist.");
+             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product for bidding doesn't exist");
+         }
         logger.info("createBid method called.");
-        bidService.create(bidDTO);
-        logger.info("Bid created successfully with id: {}", bidDTO.getId());
-        return ResponseEntity.ok("Bid created successfully with id " + bidDTO.getId());
+        Bid newBid = bidService.create(bidDTO);
+        logger.info("Bid created successfully with id: {}", newBid.getId());
+        return ResponseEntity.ok(newBid);
     }
 
     @PutMapping("/{id}")

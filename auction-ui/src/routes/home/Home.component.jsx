@@ -11,7 +11,6 @@ export default function HomeComponent() {
     useEffect(() => {
         AuctionService.getAllAuctions()
             .then(response => {
-                console.log(response.data)
                 const auctionData = response.data;
                 setAuctions(auctionData);
                 setOriginalAuctions(auctionData);

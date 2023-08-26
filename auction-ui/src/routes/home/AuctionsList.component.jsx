@@ -3,7 +3,6 @@ import { Container, Row, Col } from 'react-bootstrap';
 import AuctionCard from "./AuctionCard.component.jsx"
 
 const AuctionList = ({auctions}) => {
-    console.log(auctions)
 
     return (
         <Container>

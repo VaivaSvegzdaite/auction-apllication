@@ -110,6 +110,9 @@ public class BidService {
         if (bid.getUser() != null) {
             bidDTO.setUserId(bid.getUser().getId());
         }
+        if (bid.getAuction() != null) {
+            bidDTO.setAuctionId(bid.getAuction().getId());
+        }
         return bidDTO;
     }
 
