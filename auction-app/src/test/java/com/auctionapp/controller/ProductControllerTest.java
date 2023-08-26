@@ -35,19 +35,6 @@ class ProductControllerTest {
         productController = new ProductController(productService, userService);
     }
 
-    /*@Test
-    public void createProduct_ValidProduct_ReturnsSuccessResponse() {
-        Product product = new Product();
-        ResponseEntity<?> expectedResponse = ResponseEntity.ok(product);
-
-        when(bindingResult.hasErrors()).thenReturn(false);
-        when(productService.createProduct(product)).thenReturn(expectedResponse);
-
-        ResponseEntity<?> response = productController.createProduct(product, bindingResult);
-
-        assertEquals(expectedResponse, response);
-    }*/
-
     @Test
     public void createProduct_InvalidProduct_ReturnsBadRequest() {
         Product product = new Product();
