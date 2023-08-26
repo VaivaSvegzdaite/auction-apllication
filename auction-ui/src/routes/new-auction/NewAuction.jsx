@@ -21,20 +21,21 @@ export default function NewAuction({currentUser}) {
         axios.get(
             `http://localhost:8080/api/product/${productId}`, {headers: authHeader()}
             ).then(response => {
+                console.log(response.data)
                 setProduct(response.data)
             })
             .catch(err => {
                 console.log(err.response.data);
             }) 
 
-        axios.get(
-            `http://localhost:8080/api/auction/product/${productId}`, {headers: authHeader()}
-            ).then(response => {
-                setActiveAuction(response.data[0])
-            })
-            .catch(err => {
-                console.log(err);
-            }) 
+        // axios.get(
+        //     `http://localhost:8080/api/auction/product/${productId}`, {headers: authHeader()}
+        //     ).then(response => {
+        //         setActiveAuction(response.data[0])
+        //     })
+        //     .catch(err => {
+        //         console.log(err);
+        //     })
     }, [])
 
     return (        

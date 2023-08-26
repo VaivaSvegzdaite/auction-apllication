@@ -3,6 +3,7 @@ import Form from "react-validation/build/form";
 import Input from "react-validation/build/input";
 import UploadPicWidget from "./UploadPicWidget";
 import axios from "axios";
+import authHeader from "../../../services/auth.header.jsx";
 
 const productCategories = [
     "ANTIQUES",
@@ -43,9 +44,10 @@ export default function AddProduct({currentUser, requestState, setRequestState, 
         setIsLoading(true);
         
         axios.post(
-            'http://localhost:8080/api/product/', 
-                data
+            'http://localhost:8080/api/product/',
+                data, {headers: authHeader()}
             ).then(response => {
+                console.log("Add product" + response.data)
                 setIsLoading(false);
                 setRequestState({reqSent: true, isError: false, resMessage: "Product successfully created" });
                 setAddedProduct(response.data)
