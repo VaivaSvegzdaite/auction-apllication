@@ -62,13 +62,13 @@ class AuctionControllerTest {
     @Test
     public void getAuctionByProductId_ExistingProduct_ReturnsAuction() {
         long productId = 1L;
-        AuctionDTO auctionDTO = new AuctionDTO();
+        Auction auction = new Auction();
 
-        when(auctionService.getAuctionByProductId(productId)).thenReturn(auctionDTO);
-        ResponseEntity<AuctionDTO> response = auctionController.getAuctionByProductId(productId);
+        when(auctionService.getAuctionByProductId(productId)).thenReturn(auction);
+        ResponseEntity<Auction> response = auctionController.getAuctionByProductId(productId);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(auctionDTO, response.getBody());
+        assertEquals(auction, response.getBody());
     }
 
     @Test
@@ -77,7 +77,7 @@ class AuctionControllerTest {
 
         when(auctionService.getAuctionByProductId(productId)).thenReturn(null);
 
-        ResponseEntity<AuctionDTO> response = auctionController.getAuctionByProductId(productId);
+        ResponseEntity<Auction> response = auctionController.getAuctionByProductId(productId);
 
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
     }

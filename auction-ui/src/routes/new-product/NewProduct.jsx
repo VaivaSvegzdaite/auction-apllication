@@ -12,24 +12,34 @@ export default function NewProduct({currentUser}) {
 
     return (
         <div className="container">
-            {requestState.reqSent && addedProduct ? ( 
-                <div className="card card-container mt-4">
-                    <p>{requestState.resMessage}</p>
-                    <Link 
-                    className="btn btn-dark" 
-                    to={`/new-auction/${addedProduct.id}`}
-                    >
-                        Next
-                    </Link>
+            <div className="row justify-content-center">
+            <div className="col-10">
+                <div className="row justify-content-center">
+                    <div className="col-md-10">
+                    <h5 className="pt-4 pl-4 ml-4">Create a product:</h5>
+                    </div>
                 </div>
-            ) : ( 
-                <>
-                    <h5 className="pt-4">Create a product:</h5>
-                    <AddProduct currentUser={currentUser} requestState={requestState} setRequestState={setRequestState} setAddedProduct={setAddedProduct}/>
-                </>
-            )
-            }
-            
+                <div className="row justify-content-center">
+                    <div className="col-md-6">
+                        
+                        <AddProduct currentUser={currentUser} requestState={requestState} setRequestState={setRequestState} setAddedProduct={setAddedProduct}/>
+                    </div>
+                    <div className="col-md-4">
+                        { requestState.reqSent && addedProduct && 
+                            <div className="card card-container mt-4">
+                                <p>{requestState.resMessage}</p>
+                                <Link 
+                                className="btn btn-dark" 
+                                to={`/new-auction/${addedProduct.id}`}
+                                >
+                                    Next
+                                </Link>
+                            </div>
+                        }
+                    </div>  
+                </div>
+                </div>
+            </div>
         </div>
     )
 }

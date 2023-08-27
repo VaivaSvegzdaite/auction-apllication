@@ -45,7 +45,7 @@ export default function NewAuction({currentUser}) {
 
     return (        
         <div className="container">
-            <h5 className="pt-4">Create or update an auction for the following product:</h5>
+            <h5 className="pt-4">Auction for the following product:</h5>
            {product && (
                 <div className="card mt-4">
                     <div className="row">
@@ -61,7 +61,6 @@ export default function NewAuction({currentUser}) {
                         <div className="col-md-4">
                             { activeAuction && !isFormOpen &&
                                 <>
-                                    <h6 className="card-title pt-3 pl-3">This product is already in auction:</h6>
                                     <div className="card-body">
                                         <p className="card-text"><strong>Auction type:</strong> {activeAuction.type}</p>
                                         <p className="card-text"><strong>Minimum price:</strong> {activeAuction.startingPrice} €</p>
@@ -82,7 +81,9 @@ export default function NewAuction({currentUser}) {
                                 type="button" 
                                 onClick={() => setIsFormOpen(!isFormOpen)}
                             >
-                                {activeAuction ? "Update auction" : "Create new auction"}
+                                {!activeAuction && !isFormOpen && "Create new auction"}
+                                {(activeAuction && !isFormOpen)  && "Update auction"}
+                                {activeAuction && isFormOpen && "Close form"}
                             </button>
                             { isFormOpen && 
                                 <CreateAuction  
@@ -96,6 +97,37 @@ export default function NewAuction({currentUser}) {
                                 />
                             }
                         </div>
+                    </div>
+                    <div className="row mt-4">
+                    <div className="col-md-6">
+                    {
+                        activeAuction && activeAuction.bids && (<>
+                        <h5 className="card-title">Bids</h5>
+                        <table className="table table-striped">
+                            <thead>
+                                <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">username</th>
+                                <th scope="col">bid</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {
+                                    activeAuction.bids &&
+                                    activeAuction.bids.map((bid, index) => {
+                                        return (
+                                            <tr>
+                                            <th scope="row">{index+1}</th>
+                                            <td>{bid.user.username}</td>
+                                            <td>{bid.price}</td>
+                                            </tr>
+                                        )
+                                    })
+                                }
+                            </tbody>
+                        </table>
+                        </>)}
+                    </div>                     
                     </div>
                 </div>  
             )}

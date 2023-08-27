@@ -66,7 +66,7 @@ public class AuctionServiceTest {
         when(productService.getProductById(productId)).thenReturn(Optional.of(product));
         when(auctionRepository.findByProduct(product)).thenReturn(auction);
 
-        AuctionDTO result = auctionService.getAuctionByProductId(productId);
+        Auction result = auctionService.getAuctionByProductId(productId);
 
         verify(auctionRepository, times(1)).findByProduct(product);
     }

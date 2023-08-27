@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import { ButtonGroup, InputGroup,  FormControl, Button } from 'react-bootstrap';
+import { InputGroup,  FormControl, Button } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
 import { faXmark } from '@fortawesome/free-solid-svg-icons'
