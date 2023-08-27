@@ -1,18 +1,18 @@
-import React, { useState, useEffect } from 'react';
-import { Container, Row, Col } from 'react-bootstrap';
+import React from 'react';
+import { Container } from 'react-bootstrap';
 import AuctionCard from "./AuctionCard.component.jsx"
 
 const AuctionList = ({auctions}) => {
 
     return (
         <Container>
-            <Row>
-                {auctions.map((auction) => (
-                    <Col key={auction.id} md={4} className="mb-4">
-                        <AuctionCard auction={auction} />
-                    </Col>
-                ))}
-            </Row>
+            <div className="row justify-content-center">
+                <div className="col-10">
+                    {auctions.map((auction) => (
+                        <AuctionCard auction={auction} key={auction.id} />
+                    ))}
+                </div>
+            </div>
         </Container>
     );
 };

@@ -3,8 +3,8 @@ import axios from "axios";
 import {useParams} from "react-router-dom";
 import CreateAuction from "./components/CreateAuction";
 import {format} from "date-fns";
+import authHeader from "../../services/auth.header";
 import { Link } from "react-router-dom";
-import authHeader from "../../services/auth.header.jsx";
 
 export default function NewAuction({currentUser}) {
     const {productId} = useParams();
@@ -19,28 +19,33 @@ export default function NewAuction({currentUser}) {
 
     useEffect(() => {
         axios.get(
-            `http://localhost:8080/api/product/${productId}`, {headers: authHeader()}
-            ).then(response => {
-                console.log(response.data)
+            `http://localhost:8080/api/product/${productId}`, {
+                headers: authHeader()
+            }).then(response => {
                 setProduct(response.data)
             })
             .catch(err => {
                 console.log(err.response.data);
             }) 
 
-        // axios.get(
-        //     `http://localhost:8080/api/auction/product/${productId}`, {headers: authHeader()}
-        //     ).then(response => {
-        //         setActiveAuction(response.data[0])
-        //     })
-        //     .catch(err => {
-        //         console.log(err);
-        //     })
+        axios.get(
+            `http://localhost:8080/api/auction/product/${productId}`, {
+                headers: authHeader()
+            }).then(response => {
+                setActiveAuction(response.data)
+            })
+            .catch(err => {
+                if (err.response.status == 404) {
+                    return;
+                } else {
+                    console.log(err);
+                }
+            }) 
     }, [])
 
     return (        
         <div className="container">
-            <h5 className="pt-4">Create or update an auction for the following product:</h5>
+            <h5 className="pt-4">Auction for the following product:</h5>
            {product && (
                 <div className="card mt-4">
                     <div className="row">
@@ -56,7 +61,6 @@ export default function NewAuction({currentUser}) {
                         <div className="col-md-4">
                             { activeAuction && !isFormOpen &&
                                 <>
-                                    <h6 className="card-title pt-3 pl-3">This product is already in auction:</h6>
                                     <div className="card-body">
                                         <p className="card-text"><strong>Auction type:</strong> {activeAuction.type}</p>
                                         <p className="card-text"><strong>Minimum price:</strong> {activeAuction.startingPrice} €</p>
@@ -77,7 +81,9 @@ export default function NewAuction({currentUser}) {
                                 type="button" 
                                 onClick={() => setIsFormOpen(!isFormOpen)}
                             >
-                                {activeAuction ? "Update auction" : "Create new auction"}
+                                {!activeAuction && !isFormOpen && "Create new auction"}
+                                {(activeAuction && !isFormOpen)  && "Update auction"}
+                                {activeAuction && isFormOpen && "Close form"}
                             </button>
                             { isFormOpen && 
                                 <CreateAuction  
@@ -91,6 +97,37 @@ export default function NewAuction({currentUser}) {
                                 />
                             }
                         </div>
+                    </div>
+                    <div className="row mt-4">
+                    <div className="col-md-6">
+                    {
+                        activeAuction && activeAuction.bids && (<>
+                        <h5 className="card-title">Bids</h5>
+                        <table className="table table-striped">
+                            <thead>
+                                <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">username</th>
+                                <th scope="col">bid</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {
+                                    activeAuction.bids &&
+                                    activeAuction.bids.map((bid, index) => {
+                                        return (
+                                            <tr>
+                                            <th scope="row">{index+1}</th>
+                                            <td>{bid.user.username}</td>
+                                            <td>{bid.price}</td>
+                                            </tr>
+                                        )
+                                    })
+                                }
+                            </tbody>
+                        </table>
+                        </>)}
+                    </div>                     
                     </div>
                 </div>  
             )}

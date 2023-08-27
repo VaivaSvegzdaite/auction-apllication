@@ -41,14 +41,26 @@ public class AuctionService {
     }
 
     @Transactional
-    public AuctionDTO getAuctionByProductId(Long productId) {
+    public List<Auction> getAuctionsByUserId(Long userId) {
+        logger.info("Getting auctions by user ID: {}", userId);
+        List<Auction> allAuctions = auctionRepository.findAll();
+        List<Auction> auctionsByUserId = new ArrayList<>();
+        for (Auction auction : allAuctions) {
+            if (auction.getUser().getId() == userId)
+                auctionsByUserId.add(auction);
+        }
+        return auctionsByUserId;
+    }
+
+    @Transactional
+    public Auction getAuctionByProductId(Long productId) {
         logger.info("Getting auction by product ID: {}", productId);
-        AuctionDTO answer = null;
+        Auction answer = null;
         Optional<Product> result = productService.getProductById(productId);
         if (result.isPresent()) {
             Optional<Auction> auction = Optional.ofNullable(auctionRepository.findByProduct(result.get()));
             if (auction.isPresent()) {
-                answer = convertToDTO(auction.get());
+                answer = auction.get();
             }
         }
         return answer;

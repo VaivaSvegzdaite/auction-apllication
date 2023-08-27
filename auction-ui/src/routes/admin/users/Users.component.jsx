@@ -19,7 +19,6 @@ export class Users extends Component {
                     content: response.data,
                     users: response.data,
                 });
-                {console.log(response.data)}
             },
             error => {
                 this.setState({

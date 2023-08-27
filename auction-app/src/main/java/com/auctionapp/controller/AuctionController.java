@@ -46,11 +46,19 @@ public class AuctionController {
         return ResponseEntity.ok(auctions);
     }
 
+    @GetMapping("/user/{userId}")
+    @PreAuthorize("hasRole('USER')")
+    public ResponseEntity<List<Auction>> getAuctionsByUserId(@PathVariable Long userId) {
+        logger.info("getAuctionsByUserId method called for user id: {}", userId);
+        List<Auction> auctions = auctionService.getAuctionsByUserId(userId);
+        return ResponseEntity.ok(auctions);
+    }
+
     @GetMapping("/product/{productId}")
     @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<AuctionDTO> getAuctionByProductId(@PathVariable Long productId) {
+    public ResponseEntity<Auction> getAuctionByProductId(@PathVariable Long productId) {
         logger.info("getAuctionByProductId method called with productId: {}", productId);
-        AuctionDTO auction = auctionService.getAuctionByProductId(productId);
+        Auction auction = auctionService.getAuctionByProductId(productId);
         logger.info("getAuctionByProductId method completed.");
         if (auction == null) {
             logger.info("No auction found for productId: {}", productId);
