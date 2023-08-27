@@ -112,11 +112,15 @@ public class AuctionController {
         logger.info("updateAuction method called for auctionId: {}", id);
         if (id == null) {
             logger.warn("Invalid request data: auctionId is null.");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Invalid request data");
+        }
+        Auction updatedAuction = auctionService.updateAuction(id, auctionDTO);
+        if (updatedAuction == null) {
+            logger.warn("No auction found for auctionId: {}", id);
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Auction doesn't exist");
         }
-        auctionService.updateAuction(id, auctionDTO);
         logger.info("Auction updated successfully with id: {}", id);
-        return ResponseEntity.ok("Auction updated successfully with id " + id);
+        return ResponseEntity.ok(updatedAuction);
     }
 
     @DeleteMapping("/{id}")
@@ -129,7 +133,7 @@ public class AuctionController {
             return ResponseEntity.ok("Auction was deleted successfully!");
         } else {
             logger.warn("Auction for deletion doesn't exist. AuctionId: {}", id);
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Auction for deletion doesn't exist!");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Auction for deletion doesn't exist");
         }
     }
 }

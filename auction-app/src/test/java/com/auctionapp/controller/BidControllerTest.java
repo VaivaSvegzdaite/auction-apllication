@@ -1,8 +1,13 @@
 package com.auctionapp.controller;
 
+import com.auctionapp.model.bid.Bid;
 import com.auctionapp.model.bid.BidDTO;
 import com.auctionapp.model.bid.BidPriceDTO;
+import com.auctionapp.model.product.Product;
+import com.auctionapp.model.user.User;
 import com.auctionapp.service.BidService;
+import com.auctionapp.service.ProductService;
+import com.auctionapp.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -13,6 +18,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
@@ -20,6 +27,11 @@ class BidControllerTest {
 
         @Mock
         private BidService bidService;
+        @Mock
+        private UserService userService;
+
+        @Mock
+        private ProductService productService;
 
         @InjectMocks
         private BidController bidController;
@@ -84,6 +96,67 @@ class BidControllerTest {
             assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
             assertNull(response.getBody());
         }
+
+        @Test
+        public void createBid_ExistingUser_ExistingProduct_ReturnsBid() {
+            long userId = 1L;
+            long productId = 1L;
+            BidDTO bidDTO = new BidDTO();
+            bidDTO.setUserId(userId);
+            bidDTO.setProductId(productId);
+            User user = new User();
+            Product product = new Product();
+
+            when(userService.getUserById(userId)).thenReturn(Optional.of(user));
+            when(productService.getProductById(productId)).thenReturn(Optional.of(product));
+
+            Bid bid = new Bid();
+            when(bidService.create(bidDTO)).thenReturn(bid);
+
+            ResponseEntity<?> response = bidController.createBid(bidDTO);
+            assertEquals(HttpStatus.OK, response.getStatusCode());
+            assertEquals(bid,response.getBody());
+        }
+
+    @Test
+    public void createBid_NonExistingUser_ExistingProduct_ReturnsUserNotFound() {
+        long userId = 1L;
+        long productId = 1L;
+        BidDTO bidDTO = new BidDTO();
+        bidDTO.setProductId(productId);
+        User user = new User();
+        Product product = new Product();
+
+        when(userService.getUserById(userId)).thenReturn(Optional.of(user));
+        when(productService.getProductById(productId)).thenReturn(Optional.of(product));
+
+        Bid bid = new Bid();
+        when(bidService.create(bidDTO)).thenReturn(bid);
+
+        ResponseEntity<?> response = bidController.createBid(bidDTO);
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        assertEquals("User for bidding doesn't exist", response.getBody());
+    }
+
+    @Test
+    public void createBid_ExistingUser_NonExistingProduct_ReturnsProductNotFound() {
+        long userId = 1L;
+        long productId = 1L;
+        BidDTO bidDTO = new BidDTO();
+        bidDTO.setUserId(userId);
+        User user = new User();
+        Product product = new Product();
+
+        when(userService.getUserById(userId)).thenReturn(Optional.of(user));
+        when(productService.getProductById(productId)).thenReturn(Optional.of(product));
+
+        Bid bid = new Bid();
+        when(bidService.create(bidDTO)).thenReturn(bid);
+
+        ResponseEntity<?> response = bidController.createBid(bidDTO);
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        assertEquals("Product for bidding doesn't exist", response.getBody());
+    }
 
         @Test
         public void updateBid_ExistingBid_ReturnsSuccessMessage() {

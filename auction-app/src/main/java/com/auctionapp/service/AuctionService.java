@@ -73,18 +73,20 @@ public class AuctionService {
     }
 
     @Transactional
-    public void updateAuction(Long id, AuctionDTO auctionWithUpdates) {
+    public Auction updateAuction(Long id, AuctionDTO auctionWithUpdates) {
         logger.info("Updating auction with ID: {}", id);
         Optional<Auction> oAuction = auctionRepository.findById(id);
+        Auction updatedAuction = null;
         if (oAuction.isPresent()) {
             Auction auction = oAuction.get();
             auction.setType(auctionWithUpdates.getType());
             auction.setStartTime(auctionWithUpdates.getStartTime());
             auction.setEndTime(auctionWithUpdates.getEndTime());
             auction.setStartingPrice(auctionWithUpdates.getStartingPrice());
-            auctionRepository.save(auction);
+            updatedAuction = auctionRepository.save(auction);
             logger.info("Auction with ID {} updated successfully", id);
         }
+        return updatedAuction;
     }
 
     @Transactional

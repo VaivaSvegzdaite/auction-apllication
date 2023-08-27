@@ -1,8 +1,11 @@
 package com.auctionapp.service;
 
+import com.auctionapp.model.auction.Auction;
+import com.auctionapp.model.auction.AuctionDTO;
 import com.auctionapp.model.bid.Bid;
 import com.auctionapp.model.bid.BidDTO;
 import com.auctionapp.model.product.Product;
+import com.auctionapp.model.user.User;
 import com.auctionapp.repository.BidRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -23,6 +26,11 @@ class BidServiceTest {
 
     @Mock
     private ProductService productService;
+
+    @Mock
+    private UserService userService;
+    @Mock
+    private AuctionService auctionService;
 
     @InjectMocks
     private BidService bidService;
@@ -79,16 +87,6 @@ class BidServiceTest {
 
         assertEquals(null, result);
     }
-
-//    @Test
-//    public void create_ValidBid_ReturnsBidDTO() {
-//        Bid bid = new Bid();
-//        when(bidRepository.save(bid)).thenReturn(bid);
-//
-//        BidDTO result = bidService.create(bid);
-//
-//        assertEquals(bid.getId(), result.getId());
-//    }
 
     @Test
     public void deleteById_ExistingBid_DeletesBid() {
