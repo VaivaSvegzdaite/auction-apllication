@@ -60,6 +60,20 @@ class AuctionControllerTest {
     }
 
     @Test
+    public void getAuctionsByUserId_ReturnsListOfAuctions() {
+        long userId = 1L;
+        List<Auction> auctionList = new ArrayList<>();
+        auctionList.add(new Auction());
+
+        when(auctionService.getAuctionsByUserId(userId)).thenReturn(auctionList);
+
+        ResponseEntity<List<Auction>> response = auctionController.getAuctionsByUserId(userId);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(auctionList, response.getBody());
+    }
+
+    @Test
     public void getAuctionByProductId_ExistingProduct_ReturnsAuction() {
         long productId = 1L;
         Auction auction = new Auction();
@@ -129,46 +143,47 @@ class AuctionControllerTest {
         assertEquals("User for adding auction doesn't exist", response.getBody());
     }
 
-//    @Test
-//    public void updateAuction_AuctionExists_ReturnsUpdatedAuction() {
-//        long auctionId = 1L;
-//        AuctionDTO auctionDTO = new AuctionDTO();
-//        auctionDTO.setId(auctionId);
-//
-//        when(auctionService.getAuctionById(auctionId)).thenReturn(auctionDTO);
-//        //when(auctionService.updateAuction(auctionId, auctionDTO)).thenReturn(auctionDTO);
-//
-//        ResponseEntity<?> response = auctionController.updateAuction(auctionId, auctionDTO);
-//
-//        assertEquals(HttpStatus.OK, response.getStatusCode());
-//        assertEquals(auctionDTO, response.getBody());
-//    }
+    @Test
+    public void updateAuction_AuctionExists_ReturnsUpdatedAuction() {
+        long auctionId = 1L;
+        Auction auction = new Auction();
+        auction.setId(auctionId);
+        AuctionDTO auctionDTO = new AuctionDTO();
 
-//    @Test
-//    public void updateAuction_AuctionDoesNotExist_ReturnsNotFound() {
-//        long auctionId = 1L;
-//
-//        when(auctionService.getAuctionById(auctionId)).thenReturn(null);
-//
-//        ResponseEntity<?> response = auctionController.updateAuction(auctionId, new AuctionDTO());
-//
-//        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
-//        assertEquals("Auction doesn't exist", response.getBody());
-//    }
-//
-//    @Test
-//    public void deleteAuction_AuctionExists_ReturnsSuccessMessage() {
-//        long auctionId = 1L;
-//        AuctionDTO auctionDTO = new AuctionDTO();
-//        auctionDTO.setId(auctionId);
-//
-//        when(auctionService.getAuctionById(auctionId)).thenReturn(auctionDTO);
-//
-//        ResponseEntity<String> response = auctionController.deleteAuction(auctionId);
-//
-//        assertEquals(HttpStatus.OK, response.getStatusCode());
-//        assertEquals("Auction was deleted successfully!", response.getBody());
-//    }
+        when(auctionService.getAuctionById(auctionId)).thenReturn(auction);
+        when(auctionService.updateAuction(auctionId, auctionDTO)).thenReturn(auction);
+
+        ResponseEntity<?> response = auctionController.updateAuction(auctionId, auctionDTO);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(auction, response.getBody());
+    }
+
+    @Test
+    public void updateAuction_AuctionDoesNotExist_ReturnsNotFound() {
+        long auctionId = 1L;
+
+        when(auctionService.getAuctionById(auctionId)).thenReturn(null);
+
+        ResponseEntity<?> response = auctionController.updateAuction(auctionId, new AuctionDTO());
+
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        assertEquals("Auction doesn't exist", response.getBody());
+    }
+
+    @Test
+    public void deleteAuction_AuctionExists_ReturnsSuccessMessage() {
+        long auctionId = 1L;
+        Auction auction = new Auction();
+        auction.setId(auctionId);
+
+        when(auctionService.getAuctionById(auctionId)).thenReturn(auction);
+
+        ResponseEntity<String> response = auctionController.deleteAuction(auctionId);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("Auction was deleted successfully!", response.getBody());
+    }
 
     @Test
     public void deleteAuction_AuctionDoesNotExist_ReturnsNotFound() {
@@ -179,7 +194,7 @@ class AuctionControllerTest {
         ResponseEntity<String> response = auctionController.deleteAuction(auctionId);
 
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
-        assertEquals("Auction for deletion doesn't exist!", response.getBody());
+        assertEquals("Auction for deletion doesn't exist", response.getBody());
     }
 
 }
