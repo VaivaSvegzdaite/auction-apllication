@@ -7,14 +7,15 @@ import AuthService from "./services/auth.service";
 
 import Login from "./routes/login-signup/Login.component";
 import Signup from "./routes/login-signup/Signup.component";
-import Home from "./routes/home/Home.component.jsx";
 import Profile from "./routes/profile/Profile.component";
 import BoardUser from "./routes/boards/Board-user.component.jsx";
 import BoardAdmin from "./routes/boards/Board-admin.component.jsx";
 import Footer from "./components/Footer.jsx";
 import MyProducts from "./routes/my-products/MyProducts";
+import MyAuctions from "./routes/my-auctions/myAuctions";
 import NewProduct from "./routes/new-product/NewProduct";
 import NewAuction from "./routes/new-auction/NewAuction";
+import AuctionDetailsBid from "./routes/auction-details-bid/AuctionDetailsBid.component.jsx";
 
 class App extends Component {
     constructor(props) {
@@ -75,9 +76,9 @@ class App extends Component {
 
                     {currentUser ? (
                         <div className="navbar-nav ml-auto">
-                            <li className="nav-item">
-                                <Link to={"/my-products"} className="nav-link">
-                                    My Products
+                             <li className="nav-item">
+                                <Link to={"/my-auctions"} className="nav-link">
+                                    My Auctions
                                 </Link>
                             </li>
                             <li className="nav-item">
@@ -114,10 +115,12 @@ class App extends Component {
                         <Route path="/login" element={<Login />} />
                         <Route path="/signup" element={<Signup />} />
                         <Route path="/profile" element={<Profile />} />
+                        <Route path="/my-auctions" element={<MyAuctions currentUser={currentUser}/>} />
                         <Route path="/my-products" element={<MyProducts currentUser={currentUser}/>} />
                         <Route path="/new-product" element={<NewProduct currentUser={currentUser}/>} />
                         <Route path="/new-auction/:productId" element={<NewAuction currentUser={currentUser}/>} />
                         <Route path="/auctions" element={<BoardUser />} />
+                        <Route path="/auctions/details/:auctionId" element={<AuctionDetailsBid/>} />
                         <Route path="/admin" element={<BoardAdmin />} />
                     </Routes>
                 </div>

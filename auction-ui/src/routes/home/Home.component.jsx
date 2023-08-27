@@ -9,18 +9,11 @@ export default function HomeComponent() {
     const [originalAuctions, setOriginalAuctions] = useState([]);
 
     useEffect(() => {
-       AuctionService.getAllAuctions()
+        AuctionService.getAllAuctions()
             .then(response => {
-                const auctionsWithProduct = response.data.map(auction => ({
-                    ...auction,
-                    product: {
-                        name: auction.product.name,
-                        url: auction.product.url,
-                        description: auction.product.description
-                    }
-                }));
-                setAuctions(auctionsWithProduct);
-                setOriginalAuctions(auctionsWithProduct)
+                const auctionData = response.data;
+                setAuctions(auctionData);
+                setOriginalAuctions(auctionData);
             })
             .catch(error => {
                 console.error('Error fetching auction data:', error);
@@ -44,8 +37,8 @@ export default function HomeComponent() {
 
     return (
         <div className="container">
-            <div className="row">
-                <div className="col-md-6 mt-5">
+            <div className="row justify-content-center">
+                <div className="col-md-6 mt-4 mb-4">
                     <SearchComponent onSearch={handleSearch}/>
                 </div>
             </div>

@@ -3,6 +3,7 @@ package com.auctionapp.model.auction;
 import com.auctionapp.model.bid.Bid;
 import com.auctionapp.model.product.Product;
 import com.auctionapp.model.user.User;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import lombok.Getter;
@@ -40,7 +41,7 @@ public class Auction {
     @Min(value = 1, message = "Price should not be less than 1 EUR")
     private double startingPrice;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name="product_id", referencedColumnName = "id")
     private Product product;
 
@@ -48,8 +49,8 @@ public class Auction {
     @JoinColumn(name="user_id", referencedColumnName = "id")
     private User user;
 
-    @OneToMany
-    @JoinColumn(name="auction_id", referencedColumnName = "id") //this column will be in table bid
+    @OneToMany(mappedBy = "auction")
+    @JsonManagedReference
     private List<Bid> bids;
 
 }

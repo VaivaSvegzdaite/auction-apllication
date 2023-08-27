@@ -1,5 +1,8 @@
 import React, {useEffect, useState} from 'react';
-import { Form, FormControl, Button } from 'react-bootstrap';
+import { InputGroup,  FormControl, Button } from 'react-bootstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
+import { faXmark } from '@fortawesome/free-solid-svg-icons'
 
 const SearchComponent = ({ onSearch }) => {
     const [searchQuery, setSearchQuery] = useState('');
@@ -23,21 +26,16 @@ const SearchComponent = ({ onSearch }) => {
     };
 
     return (
-
-        <Form inline>
-            <div className="d-flex">
+        <InputGroup>
             <FormControl
                 type="text"
                 placeholder="Search..."
-                className="mr-sm-2"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
             />
-                <Button variant="outline-success mr-2" onClick={handleSearch}>Search</Button>
-                <Button variant="outline-dark" onClick={handleClear}>Clear</Button>
-            </div>
-        </Form>
-
+            <Button variant="light" onClick={handleSearch}><FontAwesomeIcon icon={faMagnifyingGlass} /></Button>
+            <Button variant="light" onClick={handleClear}><FontAwesomeIcon icon={faXmark} /></Button>
+        </InputGroup>
     );
 };
 
