@@ -120,7 +120,7 @@ class App extends Component {
                         <Route path="/new-product" element={<NewProduct currentUser={currentUser}/>} />
                         <Route path="/new-auction/:productId" element={<NewAuction currentUser={currentUser}/>} />
                         <Route path="/auctions" element={<BoardUser />} />
-                        <Route path="/auctions/details/:auctionId" element={<AuctionDetailsBid/>} />
+                        <Route path="/auctions/details/:auctionId" element={<AuctionDetailsBid currentUser={currentUser}/>} />
                         <Route path="/admin" element={<BoardAdmin />} />
                     </Routes>
                 </div>

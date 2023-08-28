@@ -3,7 +3,7 @@ import {format} from 'date-fns';
 import AuctionBid from './AuctionBid.component.jsx';
 import { Link } from "react-router-dom";
 
-const AuctionDetails = ({auction, setAuction}) => {
+const AuctionDetails = ({auction, setAuction, currentUser}) => {
     
     const formattedStartTime = format(new Date(auction.startTime), 'EEE, dd MMMM yyyy - HH:mm');
     const formattedEndTime = format(new Date(auction.endTime), 'EEE, dd MMMM yyyy - HH:mm');
@@ -51,7 +51,7 @@ const AuctionDetails = ({auction, setAuction}) => {
                                 </div>
                                 <div className="row">
                                     <div className="card-body">
-                                        <AuctionBid auction={auction} setAuction={setAuction} lastPrice={lastPrice}/>
+                                        <AuctionBid auction={auction} setAuction={setAuction} lastPrice={lastPrice} currentUser={currentUser}/>
                                     </div>
                                 </div>
                             </div>

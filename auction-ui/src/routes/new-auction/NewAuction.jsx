@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import {useParams} from "react-router-dom";
 import CreateAuction from "./components/CreateAuction";
-import {format} from "date-fns";
+import {format, isAfter} from "date-fns";
 import authHeader from "../../services/auth.header";
 import { Link } from "react-router-dom";
 
@@ -16,6 +16,8 @@ export default function NewAuction({currentUser}) {
         isError: false,
         resMessage: ''
     });
+
+    const hasEnded = activeAuction ? isAfter(new Date(), new Date(activeAuction.endTime)) : "";
 
     useEffect(() => {
         axios.get(
@@ -76,6 +78,9 @@ export default function NewAuction({currentUser}) {
                                     )}
                                 </>
                             }
+                            {hasEnded ? (
+                                <p className="ended-message text-danger font-weight-bold pl-4">Auction Ended</p>
+                            ) : (
                             <button 
                                 className="btn btn-dark btn-block" 
                                 type="button" 
@@ -85,6 +90,7 @@ export default function NewAuction({currentUser}) {
                                 {(activeAuction && !isFormOpen)  && "Update auction"}
                                 {activeAuction && isFormOpen && "Close form"}
                             </button>
+                            )}
                             { isFormOpen && 
                                 <CreateAuction  
                                     productId={productId} 
@@ -99,39 +105,39 @@ export default function NewAuction({currentUser}) {
                         </div>
                     </div>
                     <div className="row mt-4">
-                    <div className="col-md-6">
-                    {
-                        activeAuction && activeAuction.bids && (<>
-                        <h5 className="card-title">Bids</h5>
-                        <table className="table table-striped">
-                            <thead>
-                                <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">username</th>
-                                <th scope="col">bid</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {
-                                    activeAuction.bids &&
-                                    activeAuction.bids.map((bid, index) => {
-                                        return (
-                                            <tr>
-                                            <th scope="row">{index+1}</th>
-                                            <td>{bid.user.username}</td>
-                                            <td>{bid.price}</td>
-                                            </tr>
-                                        )
-                                    })
-                                }
-                            </tbody>
-                        </table>
-                        </>)}
-                    </div>                     
-                    </div>
+                        <div className="col-md-6">
+                        {
+                            activeAuction && activeAuction.bids && (<>
+                            <h5 className="card-title">Bids</h5>
+                            <table className="table table-striped">
+                                <thead>
+                                    <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">username</th>
+                                    <th scope="col">bid</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {
+                                        activeAuction.bids &&
+                                        activeAuction.bids.map((bid, index) => {
+                                            return (
+                                                <tr>
+                                                <th scope="row">{index+1}</th>
+                                                <td>{bid.user.username}</td>
+                                                <td>{bid.price}</td>
+                                                </tr>
+                                            )
+                                        })
+                                    }
+                                </tbody>
+                            </table>
+                            </>)}
+                        </div>
+                    </div>                
                 </div>  
             )}
-            <Link to="/my-products" className="link text-dark">Back to my products</Link>
+            <Link to="/my-products" className="link text-dark">Back to my products</Link> 
         </div>
     )
 }

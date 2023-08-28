@@ -3,7 +3,7 @@ import { Form, Button } from 'react-bootstrap';
 import {isAfter} from 'date-fns';
 import BidService from "../../services/bid.service.jsx";
 
-const AuctionBid = ({auction, setAuction, lastPrice}) => {
+const AuctionBid = ({auction, setAuction, lastPrice, currentUser}) => {
     const [ bidAmount, setBidAmount ] = useState('');
     const [ biddingError, setBiddingError ] = useState('');
     const [ isLoading, setIsLoading ] = useState(false);
@@ -35,7 +35,7 @@ const AuctionBid = ({auction, setAuction, lastPrice}) => {
         const data = {
             price: bidAmount,
             productId: auction.product.id,
-            userId: auction.user.id,
+            userId: currentUser.id,
             auctionId: auction.id
         };
 

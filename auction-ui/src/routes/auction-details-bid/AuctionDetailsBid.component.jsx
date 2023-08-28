@@ -3,7 +3,7 @@ import {useParams} from "react-router-dom";
 import AuctionService from "../../services/auction.service.jsx";
 import AuctionDetails from "./AuctionDetails.component.jsx";
 
-export default function AuctionDetailsBid() {
+export default function AuctionDetailsBid({currentUser}) {
     const {auctionId} = useParams();
     const [auction, setAuction] = useState(null);
 
@@ -19,7 +19,7 @@ export default function AuctionDetailsBid() {
 
     return (
     auction !== null ? (
-        <AuctionDetails auction={auction} setAuction={setAuction}/>
+        <AuctionDetails auction={auction} setAuction={setAuction} currentUser={currentUser}/>
     ) : (
         <p>Loading or no auction found</p>
     )
